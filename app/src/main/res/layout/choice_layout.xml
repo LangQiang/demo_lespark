@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <View
+        android:layout_width="74dp"
+        android:layout_height="25.5dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/qa_top_bg"></View>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25.5dp"
+        android:background="@drawable/qa_dialog_bg">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="31.5dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/time_tip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:maxWidth="300dp"
+                android:textColor="#f7c904"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/question"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:maxWidth="300dp"
+                android:textColor="#333333"
+                android:textSize="18sp" />
+
+            <com.example.lq.myapplication.choice.ProgressBarWithText
+                android:id="@+id/progress_with_text1"
+                style="@android:style/Widget.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="14dp"
+                android:max="1000"
+                android:progress="0"
+                android:progressDrawable="@drawable/choice_progress_bg" />
+
+            <com.example.lq.myapplication.choice.ProgressBarWithText
+                android:id="@+id/progress_with_text2"
+                style="@android:style/Widget.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginBottom="14dp"
+                android:max="1000"
+
+                android:progress="0"
+                android:progressDrawable="@drawable/choice_progress_bg" />
+
+            <com.example.lq.myapplication.choice.ProgressBarWithText
+                android:id="@+id/progress_with_text3"
+                style="@android:style/Widget.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginBottom="22dp"
+                android:max="1000"
+                android:progress="0"
+                android:progressDrawable="@drawable/choice_progress_bg" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <RelativeLayout
+        android:layout_centerHorizontal="true"
+        android:layout_width="58dp"
+        android:layout_marginTop="1px"
+        android:layout_height="58dp">
+
+        <com.example.lq.myapplication.choice.CircleProgressBar
+            android:id="@+id/qa_progress"
+            app:Color="#50E3C2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:id="@+id/qa_avatar"
+            android:layout_width="48dp"
+            android:layout_height="48dp" />
+
+    </RelativeLayout>
+</RelativeLayout>
