@@ -9,7 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.lq.myapplication.Constant;
 import com.example.lq.myapplication.R;
+import com.example.lq.myapplication.ToastUtil2;
 
 import org.apache.commons.io.IOUtils;
 
@@ -51,11 +53,14 @@ public class EncryptActivity extends AppCompatActivity {
     private EditText encryptData;
     private Button decrypt;
     private TextView decryptData;
+    private int[] aa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_encrypt);
+        //Constant.CONTEXTS.add(this);
+        aa = new int[1024 * 1024 * 10];
         srcData = findViewById(R.id.src_data);
         encrypt = findViewById(R.id.encrypt);
         encryptData = findViewById(R.id.encrypt_data);
@@ -67,7 +72,7 @@ public class EncryptActivity extends AppCompatActivity {
                 encrypt();
             }
         });
-
+        ToastUtil2.showToast("hahaha");
         decrypt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

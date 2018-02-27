@@ -17,7 +17,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * Created by wx on 2018/1/18.
+ * Created by lq on 2018/1/18.
  */
 
 public class ChoiceDialog {

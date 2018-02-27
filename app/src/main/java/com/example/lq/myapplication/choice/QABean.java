@@ -3,7 +3,7 @@ package com.example.lq.myapplication.choice;
 import java.util.ArrayList;
 
 /**
- * Created by wx on 2018/1/19.
+ * Created by lq on 2018/1/19.
  */
 
 class QABean {

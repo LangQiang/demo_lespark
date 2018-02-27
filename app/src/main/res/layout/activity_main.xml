@@ -4,41 +4,76 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ff3e54"
     tools:context="com.example.lq.myapplication.MainActivity">
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
         <TextView
             android:id="@+id/encrypt"
-            android:text="双重加密"
-            android:background="#ebebeb"
-            android:layout_margin="14dp"
-            android:textColor="#333333"
-            android:textSize="20sp"
-            android:gravity="center"
             android:layout_width="match_parent"
-            android:layout_height="50dp" />
+            android:layout_height="50dp"
+            android:layout_margin="14dp"
+            android:background="#ebebeb"
+            android:gravity="center"
+            android:text="双重加密"
+            android:textColor="#333333"
+            android:textSize="20sp" />
+
         <TextView
             android:id="@+id/ratio"
-            android:text="指定宽高比"
-            android:background="#ebebeb"
-            android:layout_margin="14dp"
-            android:textColor="#333333"
-            android:textSize="20sp"
-            android:gravity="center"
             android:layout_width="match_parent"
-            android:layout_height="50dp" />
+            android:layout_height="50dp"
+            android:layout_margin="14dp"
+            android:background="#ebebeb"
+            android:gravity="center"
+            android:text="指定宽高比"
+            android:textColor="#333333"
+            android:textSize="20sp" />
+
         <TextView
             android:id="@+id/choice"
-            android:text="答题弹窗"
-            android:background="#ebebeb"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
             android:layout_margin="14dp"
-            android:textColor="#333333"
-            android:textSize="20sp"
+            android:background="#ebebeb"
             android:gravity="center"
+            android:text="答题弹窗"
+            android:textColor="#333333"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/texture"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="14dp"
+            android:background="#ebebeb"
+            android:gravity="center"
+            android:text="texture"
+            android:textColor="#333333"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/xfermode"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="14dp"
+            android:background="#ebebeb"
+            android:gravity="center"
+            android:text="xfermode"
+            android:textColor="#333333"
+            android:textSize="20sp" />
+        <EditText
             android:layout_width="match_parent"
             android:layout_height="50dp" />
-
+        <com.example.lq.myapplication.MyIV
+            android:id="@+id/myiv"
+            android:scaleType="fitXY"
+            android:src="@drawable/timg"
+            android:layout_width="200dp"
+            android:layout_height="200dp" />
     </LinearLayout>
 </ScrollView>

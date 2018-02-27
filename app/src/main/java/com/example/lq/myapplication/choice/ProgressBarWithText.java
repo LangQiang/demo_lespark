@@ -11,7 +11,7 @@ import android.util.AttributeSet;
 import android.widget.ProgressBar;
 
 /**
- * Created by wx on 2018/1/18.
+ * Created by lq on 2018/1/18.
  */
 
 public class ProgressBarWithText extends ProgressBar {

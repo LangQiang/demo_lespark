@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">小demo</string>
     <string name="pb_download">下载</string>
     <string name="pb_continue">继续</string>
     <string name="pb_open">打开</string>

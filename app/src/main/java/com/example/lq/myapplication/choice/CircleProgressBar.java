@@ -15,7 +15,7 @@ import com.example.lq.myapplication.R;
 
 
 /**
- * Created by lgong on 2015/1/22.
+ * Created by lq on 2015/1/22.
  */
 public class CircleProgressBar extends View {
     private int maxProgress = 100;

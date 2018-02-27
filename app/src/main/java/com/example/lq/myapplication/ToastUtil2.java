@@ -4,10 +4,6 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.widget.Toast;
 
-/**
- * @author lq
- * @since 2016/10/12 14:02
- */
 public class ToastUtil2 {
     private static String oldMsg ;
     private static Toast toast = null ;

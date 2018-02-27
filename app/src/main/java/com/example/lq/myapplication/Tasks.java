@@ -3,11 +3,6 @@ package com.example.lq.myapplication;
 import android.os.Handler;
 import android.os.HandlerThread;
 
-
-/**
- * @author huz
- * @since 2015/12/31 11:48
- */
 public class Tasks {
 
     private static final Object sLock = new Object();

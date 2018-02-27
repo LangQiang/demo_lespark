@@ -3,7 +3,7 @@ package com.example.lq.myapplication;
 import android.app.Application;
 
 /**
- * Created by wx on 2018/1/20.
+ * Created by lq on 2018/1/20.
  */
 
 public class App extends Application {

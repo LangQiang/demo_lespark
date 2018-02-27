@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.lq.myapplication">
-
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -19,7 +19,10 @@
         </activity>
         <activity android:name=".encrypt.EncryptActivity" />
         <activity android:name=".ratio.RatioViewActivity" />
-        <activity android:name=".choice.ChoiceActivity"></activity>
+        <activity android:name=".choice.ChoiceActivity" />
+        <activity android:name=".textureview.TextureDemoActivity" />
+        <activity android:name=".xfermode.XFerModeActivity" />
+        <activity android:name=".xfermode.SrcActivity"></activity>
     </application>
 
 </manifest>
