@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.lq.myapplication.MainActivity;
+import com.example.lq.myapplication.MyIV;
 import com.example.lq.myapplication.R;
 
 public class XFerModeActivity extends AppCompatActivity {
@@ -18,6 +19,13 @@ public class XFerModeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(XFerModeActivity.this, SrcActivity.class));
+            }
+        });
+        final MyIV myIV = findViewById(R.id.myiv);
+        myIV.post(new Runnable() {
+            @Override
+            public void run() {
+                myIV.start();
             }
         });
     }

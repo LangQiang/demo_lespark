@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.lq.myapplication">
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -22,7 +24,11 @@
         <activity android:name=".choice.ChoiceActivity" />
         <activity android:name=".textureview.TextureDemoActivity" />
         <activity android:name=".xfermode.XFerModeActivity" />
-        <activity android:name=".xfermode.SrcActivity"></activity>
+        <activity android:name=".xfermode.SrcActivity" />
+        <activity android:name=".notify.NotifyActivity" />
+        <activity android:name=".stickylist.StickyListActivity" />
+        <activity android:name=".flexible.FlexibleActivity" />
+        <activity android:name=".ninepic.NinePicActivity"></activity>
     </application>
 
 </manifest>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.lq.myapplication.stickylist.StickyListActivity">
+
+    <ImageView
+        android:id="@+id/iv"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/timg" />
+
+    <com.example.lq.myapplication.stickylist.SlideRelativeView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.example.lq.myapplication.stickylist.ScrollContainView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.example.lq.myapplication.stickylist.StickyListView
+                android:id="@+id/sticky_list_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#ffffff"></com.example.lq.myapplication.stickylist.StickyListView>
+        </com.example.lq.myapplication.stickylist.ScrollContainView>
+
+        <com.example.lq.myapplication.stickylist.ScrollContainView
+            android:id="@+id/scv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#ff3e54"></View>
+        </com.example.lq.myapplication.stickylist.ScrollContainView>
+    </com.example.lq.myapplication.stickylist.SlideRelativeView>
+</RelativeLayout>
