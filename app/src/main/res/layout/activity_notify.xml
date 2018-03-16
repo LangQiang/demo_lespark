@@ -15,9 +15,5 @@
         android:text="通知2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-    <com.example.lq.myapplication.path.ArrowView
-        android:id="@+id/arrow_view"
-        android:background="#34ff44"
-        android:layout_width="100dp"
-        android:layout_height="50dp" />
+
 </LinearLayout>

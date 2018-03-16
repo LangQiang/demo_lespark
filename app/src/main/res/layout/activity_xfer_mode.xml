@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:layout_height="match_parent"
     tools:context="com.example.lq.myapplication.xfermode.XFerModeActivity">
-    <com.example.lq.myapplication.MyIV
+    <com.example.lq.myapplication.xfermode.MyIV
         android:id="@+id/myiv"
         android:layout_width="200dp"
         android:layout_height="200dp"

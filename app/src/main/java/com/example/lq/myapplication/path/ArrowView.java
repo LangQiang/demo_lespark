@@ -70,7 +70,7 @@ public class ArrowView extends View {
         paint.setStrokeCap(Paint.Cap.ROUND);
         paint.setStrokeJoin(Paint.Join.ROUND);
         paint.setStrokeWidth(15);
-        paint.setColor(0xff000000);
+        paint.setColor(0xffffffff);
         Path path = new Path();
         path.moveTo(sW, sH);
         Log.e("view","onDraw " + sH);

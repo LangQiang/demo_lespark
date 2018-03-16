@@ -23,17 +23,7 @@ public class NotifyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_notify);
-        final ArrowView arrow_view = findViewById(R.id.arrow_view);
-        arrow_view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (arrow_view.state == 0) {
-                    arrow_view.up();
-                } else {
-                    arrow_view.down();
-                }
-            }
-        });
+
         findViewById(R.id.notify1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

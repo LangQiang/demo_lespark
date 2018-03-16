@@ -28,7 +28,8 @@
         <activity android:name=".notify.NotifyActivity" />
         <activity android:name=".stickylist.StickyListActivity" />
         <activity android:name=".flexible.FlexibleActivity" />
-        <activity android:name=".ninepic.NinePicActivity"></activity>
+        <activity android:name=".ninepic.NinePicActivity" />
+        <activity android:name=".pathanim.PathAnimActivity"></activity>
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package com.example.lq.myapplication;
+package com.example.lq.myapplication.xfermode;
 
 import android.animation.ValueAnimator;
 import android.content.Context;

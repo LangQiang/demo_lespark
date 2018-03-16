@@ -5,8 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.example.lq.myapplication.MainActivity;
-import com.example.lq.myapplication.MyIV;
 import com.example.lq.myapplication.R;
 
 public class XFerModeActivity extends AppCompatActivity {
