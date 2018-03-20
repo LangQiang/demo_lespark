@@ -29,7 +29,8 @@
         <activity android:name=".stickylist.StickyListActivity" />
         <activity android:name=".flexible.FlexibleActivity" />
         <activity android:name=".ninepic.NinePicActivity" />
-        <activity android:name=".pathanim.PathAnimActivity"></activity>
+        <activity android:name=".pathanim.PathAnimActivity" />
+        <activity android:name=".levelup.LevelUpActivity"></activity>
     </application>
 
 </manifest>

@@ -8,6 +8,7 @@ import android.view.View;
 import com.example.lq.myapplication.choice.ChoiceActivity;
 import com.example.lq.myapplication.encrypt.EncryptActivity;
 import com.example.lq.myapplication.flexible.FlexibleActivity;
+import com.example.lq.myapplication.levelup.LevelUpActivity;
 import com.example.lq.myapplication.ninepic.NinePicActivity;
 import com.example.lq.myapplication.notify.NotifyActivity;
 import com.example.lq.myapplication.pathanim.PathAnimActivity;
@@ -87,17 +88,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, PathAnimActivity.class));
             }
         });
-        final View view = findViewById(R.id.visible_view);
-        findViewById(R.id.visible).setOnClickListener(new View.OnClickListener() {
+
+        findViewById(R.id.level_up).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                view.setVisibility(View.VISIBLE);
-            }
-        });
-        findViewById(R.id.invisible).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                view.setVisibility(View.GONE);
+                startActivity(new Intent(MainActivity.this, LevelUpActivity.class));
             }
         });
     }
