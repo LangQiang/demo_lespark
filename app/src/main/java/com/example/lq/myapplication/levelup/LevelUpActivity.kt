@@ -27,7 +27,7 @@ class LevelUpActivity : AppCompatActivity() {
         rl = findViewById(R.id.gift_container)
         val play = findViewById<Button>(R.id.play)
         play.setOnClickListener({
-            show()
+            show(rl)
         })
         val tv = findViewById<TextView>(R.id.tv)
         val seek = findViewById<SeekBar>(R.id.seek)
@@ -50,7 +50,7 @@ class LevelUpActivity : AppCompatActivity() {
         seek.progress = 10
     }
 
-    private fun show() {
+    private fun show(rl : RelativeLayout?) {
         rl?.removeAllViews()
         val view = View.inflate(this, R.layout.anim_level_up_layout, null)
         rl?.addView(view)
