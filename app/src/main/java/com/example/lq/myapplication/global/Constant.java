@@ -1,4 +1,4 @@
-package com.example.lq.myapplication;
+package com.example.lq.myapplication.global;
 
 import android.content.Context;
 

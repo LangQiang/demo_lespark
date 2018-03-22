@@ -5,7 +5,7 @@ import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
 
-import com.example.lq.myapplication.App;
+import com.example.lq.myapplication.global.App;
 
 /**
  * Created by lq on 2018/3/12.

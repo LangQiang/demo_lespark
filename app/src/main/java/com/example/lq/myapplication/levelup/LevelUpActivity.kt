@@ -15,7 +15,7 @@ import android.widget.RelativeLayout
 import android.widget.SeekBar
 import android.widget.TextView
 import com.example.lq.myapplication.R
-import com.example.lq.myapplication.ToastUtil2
+import com.example.lq.myapplication.utils.ToastUtil2
 import com.example.lq.myapplication.utils.UIHelper
 
 class LevelUpActivity : AppCompatActivity() {

@@ -3,29 +3,19 @@ package com.example.lq.myapplication.encrypt;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.lq.myapplication.Constant;
 import com.example.lq.myapplication.R;
-import com.example.lq.myapplication.ToastUtil2;
+import com.example.lq.myapplication.utils.ToastUtil2;
 
-import org.apache.commons.io.IOUtils;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.Security;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
-import java.util.Arrays;
 
 import javax.crypto.Cipher;
 

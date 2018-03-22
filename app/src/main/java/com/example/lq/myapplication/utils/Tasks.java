@@ -1,7 +1,9 @@
-package com.example.lq.myapplication;
+package com.example.lq.myapplication.utils;
 
 import android.os.Handler;
 import android.os.HandlerThread;
+
+import com.example.lq.myapplication.global.App;
 
 public class Tasks {
 

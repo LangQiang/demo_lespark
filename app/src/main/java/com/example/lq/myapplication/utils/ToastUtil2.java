@@ -1,8 +1,10 @@
-package com.example.lq.myapplication;
+package com.example.lq.myapplication.utils;
 
 import android.content.Context;
 import android.text.TextUtils;
 import android.widget.Toast;
+
+import com.example.lq.myapplication.global.App;
 
 public class ToastUtil2 {
     private static String oldMsg ;

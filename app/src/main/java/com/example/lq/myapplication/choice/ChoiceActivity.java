@@ -1,20 +1,13 @@
 package com.example.lq.myapplication.choice;
 
-import android.animation.ValueAnimator;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.TextView;
 
 import com.example.lq.myapplication.R;
-import com.example.lq.myapplication.ToastUtil2;
-
-import static android.app.usage.NetworkStats.Bucket.STATE_DEFAULT;
+import com.example.lq.myapplication.utils.ToastUtil2;
 
 public class ChoiceActivity extends AppCompatActivity {
     int [] memory;
