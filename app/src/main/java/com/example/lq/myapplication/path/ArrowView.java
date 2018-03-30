@@ -43,12 +43,6 @@ public class ArrowView extends View {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         Log.e("view","onSizeChanged");
-
-    }
-
-    @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        super.onLayout(changed, left, top, right, bottom);
         height = getHeight();
         width = getWidth();
         arrowWidth = (int) (width * 0.35f);
@@ -60,6 +54,13 @@ public class ArrowView extends View {
         mH = startH;
         Log.e("view","onLayout " + sH);
         state = 1;
+
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+
     }
 
     @Override

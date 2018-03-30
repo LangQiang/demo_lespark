@@ -1,8 +1,10 @@
 package com.example.lq.myapplication;
 
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 
 import com.example.lq.myapplication.choice.ChoiceActivity;
