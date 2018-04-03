@@ -30,7 +30,8 @@
         <activity android:name=".flexible.FlexibleActivity" />
         <activity android:name=".ninepic.NinePicActivity" />
         <activity android:name=".pathanim.PathAnimActivity" />
-        <activity android:name=".levelup.LevelUpActivity"></activity>
+        <activity android:name=".levelup.LevelUpActivity" />
+        <activity android:name=".collapsible.CollapsibleActivity"></activity>
     </application>
 
 </manifest>

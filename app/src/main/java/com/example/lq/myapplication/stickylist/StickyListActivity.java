@@ -1,5 +1,6 @@
 package com.example.lq.myapplication.stickylist;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,7 +23,7 @@ public class StickyListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sticky_list);
         ListView lv = findViewById(R.id.sticky_list_view);
-        lv.setAdapter(new MyListAdapter());
+        lv.setAdapter(new MyListAdapter(this));
         ImageView iv = findViewById(R.id.iv);
         RelativeLayout parent = (RelativeLayout) iv.getParent();
         parent.removeView(iv);
@@ -31,7 +32,10 @@ public class StickyListActivity extends AppCompatActivity {
 
     }
     static class MyListAdapter extends BaseAdapter{
-
+        Context context;
+        public MyListAdapter(Context context) {
+            this.context = context;
+        }
         @Override
         public int getCount() {
             return 100;
@@ -49,9 +53,10 @@ public class StickyListActivity extends AppCompatActivity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            TextView textView = new TextView(parent.getContext());
-            textView.setText("item" + position);
-            return textView;
+            if (convertView == null) {
+                convertView = View.inflate(context,R.layout.sticky_list_item_layout,null);
+            }
+            return convertView;
         }
     }
 }

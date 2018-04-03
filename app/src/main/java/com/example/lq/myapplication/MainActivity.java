@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.lq.myapplication.choice.ChoiceActivity;
+import com.example.lq.myapplication.collapsible.CollapsibleActivity;
 import com.example.lq.myapplication.encrypt.EncryptActivity;
 import com.example.lq.myapplication.flexible.FlexibleActivity;
 import com.example.lq.myapplication.levelup.LevelUpActivity;
@@ -95,6 +96,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, LevelUpActivity.class));
+            }
+        });
+
+        findViewById(R.id.collapsible).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, CollapsibleActivity.class));
             }
         });
     }

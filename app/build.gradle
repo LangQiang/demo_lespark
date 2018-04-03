@@ -13,12 +13,22 @@ android {
         buildToolsVersion "26.0.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    signingConfigs {
+        release {
+            keyAlias 'demosign'
+            keyPassword 'xx'
+            storeFile file('/Users/wx/Documents/demo.jsk')
+            storePassword 'ss'
+        }
+    }
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
 }
 
 dependencies {
