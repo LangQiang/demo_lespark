@@ -1,7 +1,10 @@
 package com.example.lq.myapplication.swipeback
 
 import android.app.Activity
+import android.app.ActivityOptions
 import android.content.Context
+import android.os.Build
+import android.support.v4.view.ViewCompat
 import android.support.v4.widget.ViewDragHelper
 import android.util.AttributeSet
 import android.util.Log
@@ -9,9 +12,6 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import android.app.ActivityOptions
-import android.os.Build
-import android.support.v4.view.ViewCompat
 
 
 /**
@@ -116,12 +116,11 @@ class SwipeBackLayout @JvmOverloads constructor(context: Context, attrs: Attribu
 
     open fun attachToActivity(activity: Activity) {
         if (parent != null) {
-            return
+            (parent as ViewGroup).let {
+                it.removeView(this)
+            }
         }
         mActivity = activity
-        val a = activity.theme.obtainStyledAttributes(intArrayOf(android.R.attr.windowBackground))
-        val background = a.getResourceId(0, 0)
-        a.recycle()
 
         val decor = activity.window.decorView as ViewGroup
         var decorChild = decor.findViewById<View>(android.R.id.content)
@@ -207,7 +206,5 @@ class SwipeBackLayout @JvmOverloads constructor(context: Context, attrs: Attribu
         } catch (e: Throwable) {
             Log.e("invokea", e.toString())
         }
-
     }
-
 }

@@ -16,6 +16,7 @@ import com.example.lq.myapplication.pathanim.PathAnimActivity;
 import com.example.lq.myapplication.ratio.RatioViewActivity;
 import com.example.lq.myapplication.stickylist.StickyListActivity;
 import com.example.lq.myapplication.swipeback.SwipeBackActivity;
+import com.example.lq.myapplication.swipeback.TestSwipeBackActivity;
 import com.example.lq.myapplication.textureview.TextureDemoActivity;
 import com.example.lq.myapplication.xfermode.XFerModeActivity;
 
@@ -108,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.swipe_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, SwipeBackActivity.class));
+                startActivity(new Intent(MainActivity.this, TestSwipeBackActivity.class));
             }
         });
     }

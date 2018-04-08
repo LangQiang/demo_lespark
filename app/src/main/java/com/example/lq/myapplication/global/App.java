@@ -87,7 +87,9 @@ public class App extends Application {
                         System.runFinalization();
                         poll = referenceQueue.poll();
                         Log.e("activity",(poll == null) + "  --gc--  " + (poll == weakReference));
-                        ToastUtil2.showToast(name + " 存在内存泄露");
+                        if (poll == null) {
+                            ToastUtil2.showToast(name + " 存在内存泄露");
+                        }
                     }
                 }
             },5000);
