@@ -1,10 +1,8 @@
 package com.example.lq.myapplication;
 
-import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 
 import com.example.lq.myapplication.choice.ChoiceActivity;
@@ -17,6 +15,7 @@ import com.example.lq.myapplication.notify.NotifyActivity;
 import com.example.lq.myapplication.pathanim.PathAnimActivity;
 import com.example.lq.myapplication.ratio.RatioViewActivity;
 import com.example.lq.myapplication.stickylist.StickyListActivity;
+import com.example.lq.myapplication.swipeback.SwipeBackActivity;
 import com.example.lq.myapplication.textureview.TextureDemoActivity;
 import com.example.lq.myapplication.xfermode.XFerModeActivity;
 
@@ -103,6 +102,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, CollapsibleActivity.class));
+            }
+        });
+
+        findViewById(R.id.swipe_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, SwipeBackActivity.class));
             }
         });
     }

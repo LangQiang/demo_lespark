@@ -31,7 +31,10 @@
         <activity android:name=".ninepic.NinePicActivity" />
         <activity android:name=".pathanim.PathAnimActivity" />
         <activity android:name=".levelup.LevelUpActivity" />
-        <activity android:name=".collapsible.CollapsibleActivity"></activity>
+        <activity android:name=".collapsible.CollapsibleActivity" />
+        <activity android:name=".widget.FinishActivity" />
+        <activity android:name=".swipeback.SwipeBackActivity"
+            android:theme="@style/MainTheme"></activity>
     </application>
 
 </manifest>

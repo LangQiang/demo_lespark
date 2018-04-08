@@ -15,8 +15,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.lq.myapplication.R;
+import com.example.lq.myapplication.widget.FinishActivity;
 
-public class StickyListActivity extends AppCompatActivity {
+public class StickyListActivity extends FinishActivity {
     private RecyclerView rv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
