@@ -2,7 +2,9 @@ package com.example.lq.myapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 
 import com.example.lq.myapplication.choice.ChoiceActivity;
@@ -18,7 +20,14 @@ import com.example.lq.myapplication.stickylist.StickyListActivity;
 import com.example.lq.myapplication.swipeback.SwipeBackActivity;
 import com.example.lq.myapplication.swipeback.TestSwipeBackActivity;
 import com.example.lq.myapplication.textureview.TextureDemoActivity;
+import com.example.lq.myapplication.utils.Tasks;
 import com.example.lq.myapplication.xfermode.XFerModeActivity;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
         //b
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         findViewById(R.id.encrypt).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,5 +120,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, TestSwipeBackActivity.class));
             }
         });
+
+        findViewById(R.id.hot_fix).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, HotFixActivity.class));
+            }
+        });
+
+
+
     }
 }

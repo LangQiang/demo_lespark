@@ -3,6 +3,7 @@
     package="com.example.lq.myapplication">
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:name=".global.App"
@@ -36,7 +37,10 @@
         <activity
             android:name=".swipeback.SwipeBackActivity"
             android:theme="@style/MainTheme" />
-        <activity android:name=".swipeback.TestSwipeBackActivity" android:theme="@style/MainTheme" ></activity>
+        <activity
+            android:name=".swipeback.TestSwipeBackActivity"
+            android:theme="@style/MainTheme" />
+        <activity android:name=".HotFixActivity"></activity>
     </application>
 
 </manifest>
