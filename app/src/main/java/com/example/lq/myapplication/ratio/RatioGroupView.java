@@ -15,7 +15,7 @@ import com.example.lq.myapplication.R;
  */
 
 public class RatioGroupView extends FrameLayout {
-
+    private static final String TAG = RatioGroupView.class.getSimpleName();
     private float ratio;
 
     public RatioGroupView(@NonNull Context context) {

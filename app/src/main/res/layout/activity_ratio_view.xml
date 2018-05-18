@@ -1,21 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="30dp"
     android:background="#ffffff"
     tools:context="com.example.lq.myapplication.ratio.RatioViewActivity">
-    <com.example.lq.myapplication.ratio.RatioGroupView
-        android:layout_width="match_parent"
-        app:ratio="1"
-        android:background="#333333"
-        android:layout_height="match_parent"></com.example.lq.myapplication.ratio.RatioGroupView>
-    <com.example.lq.myapplication.ratio.FixedAspectRatioFrameLayout
-        android:background="#ff3e54"
-        app:aspectRatio="0.643"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-    </com.example.lq.myapplication.ratio.FixedAspectRatioFrameLayout>
-</RelativeLayout>
+    <com.example.lq.myapplication.ratio.MyViewGroup2
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="#3333ff3f">
+
+        <!--<com.example.lq.myapplication.ratio.MyViewGroup-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:background="#3333ff3f">-->
+
+            <!--<com.example.lq.myapplication.ratio.MyView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:background="#33ff33ff" />-->
+        <!--</com.example.lq.myapplication.ratio.MyViewGroup>-->
+        <!--<com.example.lq.myapplication.ratio.MyViewGroup-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:background="#3333ff3f">-->
+
+            <!--<com.example.lq.myapplication.ratio.MyView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:background="#33ff33ff" />-->
+        <!--</com.example.lq.myapplication.ratio.MyViewGroup>-->
+    </com.example.lq.myapplication.ratio.MyViewGroup2>
+</LinearLayout>

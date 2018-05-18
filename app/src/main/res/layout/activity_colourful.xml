@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="#ffffff"
+    android:layout_height="match_parent"
+    tools:context="com.example.lq.myapplication.colourful.ColourfulActivity">
+
+    <com.example.lq.myapplication.colourful.ColourfulTextView
+        android:id="@+id/colourful_tv"
+        android:background="@drawable/pk_time"
+        android:gravity="center"
+        android:textColor="#ffee00"
+        android:textSize="12sp"
+        android:text="hahaha"
+        android:layout_centerInParent="true"
+        android:minWidth="100dp"
+        android:layout_width="wrap_content"
+        android:layout_height="16dp"
+         />
+    <Button
+        android:text="start"
+        android:id="@+id/start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <Button
+        android:layout_centerHorizontal="true"
+        android:text="stop"
+        android:id="@+id/stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</RelativeLayout>

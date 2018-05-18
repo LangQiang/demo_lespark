@@ -3,12 +3,17 @@ package com.example.lq.myapplication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.lq.myapplication.choice.ChoiceActivity;
 import com.example.lq.myapplication.collapsible.CollapsibleActivity;
+import com.example.lq.myapplication.colourful.ColourfulActivity;
 import com.example.lq.myapplication.encrypt.EncryptActivity;
 import com.example.lq.myapplication.flexible.FlexibleActivity;
 import com.example.lq.myapplication.levelup.LevelUpActivity;
@@ -128,7 +133,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
+        findViewById(R.id.colourful_tv).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, ColourfulActivity.class));
+            }
+        });
     }
+
 }
