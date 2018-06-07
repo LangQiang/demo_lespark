@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 
     <application
         android:name=".global.App"
@@ -41,7 +42,14 @@
             android:name=".swipeback.TestSwipeBackActivity"
             android:theme="@style/MainTheme" />
         <activity android:name=".HotFixActivity" />
-        <activity android:name=".colourful.ColourfulActivity"></activity>
+        <activity android:name=".colourful.ColourfulActivity" />
+        <activity
+            android:name=".picpreview.PicPreviewActivity"
+            android:theme="@style/MainTheme2" />
+        <activity
+            android:name=".picpreview.TestPicActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".likeview.LikeViewActivity"></activity>
     </application>
 
 </manifest>

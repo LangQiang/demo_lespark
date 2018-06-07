@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:id="@+id/root_view"
+    android:layout_height="match_parent"
+    tools:context="com.example.lq.myapplication.picpreview.TestPicActivity">
+
+    <ImageView
+        android:id="@+id/iv1"
+        android:scaleType="centerCrop"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginLeft="50dp"
+        android:src="@drawable/aaa" />
+
+    <ImageView
+        android:layout_toRightOf="@+id/iv1"
+        android:layout_marginTop="300dp"
+        android:scaleType="centerCrop"
+        android:id="@+id/iv2"
+        android:layout_width="192dp"
+        android:layout_height="108dp"
+        android:src="@drawable/bbb" />
+
+    <ImageView
+        android:id="@+id/iv3"
+        android:scaleType="centerCrop"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/iv1"
+        android:src="@drawable/ccc" />
+
+    <ImageView
+        android:id="@+id/iv4"
+        android:scaleType="centerCrop"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/ddd" />
+</RelativeLayout>

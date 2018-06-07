@@ -11,7 +11,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
+        <ImageView
+            android:background="#ffffff"
+            android:id="@+id/text_iv"
+            android:src="@drawable/ddd"
+            android:scaleType="matrix"
+            android:layout_width="200dp"
+            android:layout_height="200dp" />
         <TextView
             android:id="@+id/encrypt"
             android:layout_width="match_parent"
@@ -172,6 +178,26 @@
             android:background="#ebebeb"
             android:gravity="center"
             android:text="colourful"
+            android:textColor="#333333"
+            android:textSize="20sp" />
+        <TextView
+            android:id="@+id/pic_preview"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="14dp"
+            android:background="#ebebeb"
+            android:gravity="center"
+            android:text="仿微信大图"
+            android:textColor="#333333"
+            android:textSize="20sp" />
+        <TextView
+            android:id="@+id/like_view"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="14dp"
+            android:background="#ebebeb"
+            android:gravity="center"
+            android:text="点赞飘心"
             android:textColor="#333333"
             android:textSize="20sp" />
     </LinearLayout>

@@ -17,4 +17,10 @@
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
+    <style name="MainTheme2" parent="Theme.AppCompat.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
 </resources>

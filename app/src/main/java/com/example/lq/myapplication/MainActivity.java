@@ -1,6 +1,10 @@
 package com.example.lq.myapplication;
 
+import android.animation.TypeEvaluator;
 import android.content.Intent;
+import android.graphics.Matrix;
+import android.graphics.Point;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.SystemClock;
@@ -8,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -17,19 +23,26 @@ import com.example.lq.myapplication.colourful.ColourfulActivity;
 import com.example.lq.myapplication.encrypt.EncryptActivity;
 import com.example.lq.myapplication.flexible.FlexibleActivity;
 import com.example.lq.myapplication.levelup.LevelUpActivity;
+import com.example.lq.myapplication.likeview.LikeViewActivity;
 import com.example.lq.myapplication.ninepic.NinePicActivity;
 import com.example.lq.myapplication.notify.NotifyActivity;
 import com.example.lq.myapplication.pathanim.PathAnimActivity;
+import com.example.lq.myapplication.picpreview.PicPreviewActivity;
+import com.example.lq.myapplication.picpreview.TestPicActivity;
 import com.example.lq.myapplication.ratio.RatioViewActivity;
 import com.example.lq.myapplication.stickylist.StickyListActivity;
 import com.example.lq.myapplication.swipeback.SwipeBackActivity;
 import com.example.lq.myapplication.swipeback.TestSwipeBackActivity;
 import com.example.lq.myapplication.textureview.TextureDemoActivity;
+import com.example.lq.myapplication.utils.DeviceInfoManager;
 import com.example.lq.myapplication.utils.Tasks;
 import com.example.lq.myapplication.xfermode.XFerModeActivity;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -39,6 +52,28 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //b
+        Log.e("ippp",Arrays.toString(";".split(";")));
+        try {
+            Log.e("ippp", InetAddress.getByName("1.1.1.1").toString());
+        } catch (Exception e) {
+            Log.e("ippp", e.toString());
+        }
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+//                                Log.e("ippp", Arrays.toString(InetAddress.getAllByName("192.168.1.2;123.132.1.23")));
+
+                    Log.e("ippp", InetAddress.getByAddress(new byte[]{(byte) 192, 1, 1, 1}).toString());
+                } catch (Exception e) {
+                    Log.e("ippp", e.toString());
+
+                }
+            }
+        }).start();
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         findViewById(R.id.encrypt).setOnClickListener(new View.OnClickListener() {
@@ -139,6 +174,37 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, ColourfulActivity.class));
             }
         });
+
+        findViewById(R.id.pic_preview).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, TestPicActivity.class));
+                overridePendingTransition(0, 0);
+            }
+        });
+        findViewById(R.id.like_view).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, LikeViewActivity.class));
+            }
+        });
+        fun();
+    }
+
+    public static void fun() {
+        C c = new C();
+        c.setCallBack(new IA() {
+            @Override
+            public void f() {
+                Log.e("callback", "call");
+            }
+        });
+        c.run();
+    }
+
+
+    interface IA {
+        void f();
     }
 
 }
