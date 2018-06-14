@@ -1,6 +1,8 @@
 package com.example.lq.myapplication;
 
 import android.animation.TypeEvaluator;
+import android.app.Activity;
+import android.app.VoiceInteractor;
 import android.content.Intent;
 import android.graphics.Matrix;
 import android.graphics.Point;
@@ -22,6 +24,7 @@ import com.example.lq.myapplication.collapsible.CollapsibleActivity;
 import com.example.lq.myapplication.colourful.ColourfulActivity;
 import com.example.lq.myapplication.encrypt.EncryptActivity;
 import com.example.lq.myapplication.flexible.FlexibleActivity;
+import com.example.lq.myapplication.global.App;
 import com.example.lq.myapplication.levelup.LevelUpActivity;
 import com.example.lq.myapplication.likeview.LikeViewActivity;
 import com.example.lq.myapplication.ninepic.NinePicActivity;
@@ -36,6 +39,7 @@ import com.example.lq.myapplication.swipeback.TestSwipeBackActivity;
 import com.example.lq.myapplication.textureview.TextureDemoActivity;
 import com.example.lq.myapplication.utils.DeviceInfoManager;
 import com.example.lq.myapplication.utils.Tasks;
+import com.example.lq.myapplication.utils.ToastUtil2;
 import com.example.lq.myapplication.xfermode.XFerModeActivity;
 
 import java.io.File;
@@ -47,7 +51,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements App.ITest{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.e("ippp", e.toString());
         }
+
+        App.getInstance().setITest(this);
 
         new Thread(new Runnable() {
             @Override
@@ -114,8 +120,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, NotifyActivity.class));
             }
         });
+        int a = R . string . app_name ;
 
-        findViewById(R.id.sticky).setOnClickListener(new View.OnClickListener() {
+        findViewById(R. id. sticky).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, StickyListActivity.class));
@@ -188,23 +195,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, LikeViewActivity.class));
             }
         });
-        fun();
+
     }
 
-    public static void fun() {
-        C c = new C();
-        c.setCallBack(new IA() {
-            @Override
-            public void f() {
-                Log.e("callback", "call");
-            }
-        });
-        c.run();
+    @Override
+    public void test() {
+        ToastUtil2.showToast("test is run");
     }
-
-
-    interface IA {
-        void f();
-    }
-
 }

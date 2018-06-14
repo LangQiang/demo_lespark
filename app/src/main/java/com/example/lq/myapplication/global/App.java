@@ -73,6 +73,7 @@ public class App extends Application {
 
         @Override
         public void onActivityDestroyed(Activity activity) {
+            ToastUtil2.showToast(activity.getLocalClassName() + "  Destroyed");
             Log.e("activity",activity.getLocalClassName() + "  --onActivityDestroyed");
             final String name = activity.getLocalClassName();
             //Activity activity1 = STACK.pop();
@@ -99,4 +100,18 @@ public class App extends Application {
 //            Log.e("activity",(poll == null) + "  --gc--  " + (poll == weakReference));
         }
     }
+
+    public void invokeTestFun() {
+        iTest.test();
+    }
+
+    public void setITest(ITest iTest) {
+        this.iTest = iTest;
+    }
+
+    public interface ITest{
+        void test();
+    }
+
+    private ITest iTest;
 }

@@ -104,7 +104,7 @@ class ScaleImageView @JvmOverloads constructor(
             }
             MotionEvent.ACTION_MOVE -> {
                 mMoved = true
-                if (event.pointerCount == 2) {
+                if (event.pointerCount == 2 && mCurrentTouchMode != TOUCH_MODE_SLIDE_DOWN_2_FINISH) {
                     //缩放
                     scaleByFinger(event)
                 }
@@ -128,7 +128,9 @@ class ScaleImageView @JvmOverloads constructor(
                         }
                     } else {
                         //位移
-                        checkBoundAndTranslate(dX,dY)
+                        if (mDistance != 0.0) {
+                            checkBoundAndTranslate(dX, dY)
+                        }
                     }
                 }
                 Log.e("touch", "ACTION_MOVE  ${event.pointerCount} ")

@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import com.example.lq.myapplication.R
+import com.example.lq.myapplication.global.App
 import kotlinx.android.synthetic.main.activity_test_pic.*
 
 class TestPicActivity : AppCompatActivity() {
@@ -12,9 +13,9 @@ class TestPicActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_test_pic)
-
         for (i in 0 .. root_view.childCount - 1) {
             root_view.getChildAt(i).setOnClickListener({
+//                App.getInstance().invokeTestFun()
                 var mInfos = arrayListOf(PicViewInfo(R.drawable.aaa,iv1.x,iv1.y,iv1.width,iv1.height,i == 0),
                         PicViewInfo(R.drawable.bbb,iv2.x,iv2.y,iv2.width,iv2.height,i == 1),
                         PicViewInfo(R.drawable.ccc,iv3.x,iv3.y,iv3.width,iv3.height,i == 2),
