@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.lq.myapplication.anims.AnimsActivity;
 import com.example.lq.myapplication.choice.ChoiceActivity;
 import com.example.lq.myapplication.collapsible.CollapsibleActivity;
 import com.example.lq.myapplication.colourful.ColourfulActivity;
@@ -193,6 +194,13 @@ public class MainActivity extends AppCompatActivity implements App.ITest{
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, LikeViewActivity.class));
+            }
+        });
+
+        findViewById(R.id.cake_anim).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, AnimsActivity.class));
             }
         });
 

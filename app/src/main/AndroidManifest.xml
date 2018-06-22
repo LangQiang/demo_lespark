@@ -4,7 +4,7 @@
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".global.App"
@@ -49,7 +49,8 @@
         <activity
             android:name=".picpreview.TestPicActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".likeview.LikeViewActivity"></activity>
+        <activity android:name=".likeview.LikeViewActivity" />
+        <activity android:name=".anims.AnimsActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
     </application>
 
 </manifest>
