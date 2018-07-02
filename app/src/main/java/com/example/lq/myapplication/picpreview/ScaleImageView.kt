@@ -47,7 +47,7 @@ class ScaleImageView @JvmOverloads constructor(
     private var mNeedFixXY = false
     private var mNeedFixTranslateX = 0f
     private var mNeedFixTranslateY = 0f
-    private var mOriginalRatio : Float = 1f
+    private var mOriginalRatio: Float = 1f
     private var mAnimIsPlaying = false
 
     init {
@@ -103,8 +103,14 @@ class ScaleImageView @JvmOverloads constructor(
                 return true
             }
             MotionEvent.ACTION_MOVE -> {
-                mMoved = true
-                if (event.pointerCount == 2 && mCurrentTouchMode != TOUCH_MODE_SLIDE_DOWN_2_FINISH) {
+                if (!mMoved) {
+                    if (judgeMove(mDx,mDy,event.rawX,event.rawY) || event.pointerCount == 2) {
+                        mMoved = true
+                    } else {
+                        return super.onTouchEvent(event)
+                    }
+                }
+                if (event.pointerCount == 2) {
                     //缩放
                     scaleByFinger(event)
                 }
@@ -126,6 +132,8 @@ class ScaleImageView @JvmOverloads constructor(
                         if (rv.translationY > 0) {
                             view.alpha = 1 - rv.translationY / mScreenHeight
                         }
+                    } else if ((Math.abs(dY) * 2 < Math.abs(dX) && mDistance == 0.0)) {  //左右切换图片
+                        parent.requestDisallowInterceptTouchEvent(false)
                     } else {
                         //位移
                         if (mDistance != 0.0) {
@@ -148,6 +156,14 @@ class ScaleImageView @JvmOverloads constructor(
                         releaseRvWithAnim()
                     }
                 }
+
+                if (mCurrentTouchMode == TOUCH_MODE_SLIDE_DOUBLE_FINGER) {
+                    if (rv.translationY > mScreenHeight / 6) {
+                        (context as PicPreviewActivity).finishWithAnim()
+                    } else {
+                        releaseRvWithAnim()
+                    }
+                }
             }
             MotionEvent.ACTION_POINTER_UP -> {
                 mLastScale = (1 + mCurrentDistance / 400).toFloat()
@@ -161,15 +177,15 @@ class ScaleImageView @JvmOverloads constructor(
     }
 
     private fun releaseRvWithAnim() {
-        val pvhPicTranslationX = PropertyValuesHolder.ofFloat(View.TRANSLATION_X, rv.translationX,0f)
-        val pvhPicTranslationY = PropertyValuesHolder.ofFloat(View.TRANSLATION_Y, rv.translationY,0f)
-        val pvhPicScaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, rv.scaleX,1f)
-        val pvhPicScaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, rv.scaleY,1f)
+        val pvhPicTranslationX = PropertyValuesHolder.ofFloat(View.TRANSLATION_X, rv.translationX, 0f)
+        val pvhPicTranslationY = PropertyValuesHolder.ofFloat(View.TRANSLATION_Y, rv.translationY, 0f)
+        val pvhPicScaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, rv.scaleX, 1f)
+        val pvhPicScaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, rv.scaleY, 1f)
         val oa = ObjectAnimator.ofPropertyValuesHolder(rv, pvhPicTranslationX, pvhPicTranslationY, pvhPicScaleX, pvhPicScaleY)
         oa.duration = 200
         oa.interpolator = LinearInterpolator()
         oa.start()
-        val objAnim = ObjectAnimator.ofFloat(view,View.ALPHA,1f)
+        val objAnim = ObjectAnimator.ofFloat(view, View.ALPHA, 1f)
         objAnim.duration = 200
         objAnim.start()
     }
@@ -276,7 +292,7 @@ class ScaleImageView @JvmOverloads constructor(
         imageMatrix.getValues(preScaleValue)
         if (distance > mDistance && mOriginalRatio * MAX_ZOOM_RATIO < preScaleValue[0]) { //放大 判断缩放的边界 达到最大值 不再放大
             return
-        } else if (distance < mDistance && mOriginalRatio * MIN_ZOOM_RATIO >= preScaleValue[0]){   //缩小 达到最小值 不做处理
+        } else if (distance < mDistance && mOriginalRatio * MIN_ZOOM_RATIO >= preScaleValue[0]) {   //缩小 达到最小值 不做处理
             return
         } else {
             if (distance == mDistance) { //距离一致 不缩放 减少计算
@@ -371,5 +387,10 @@ class ScaleImageView @JvmOverloads constructor(
         imageMatrix = mScaleMatrix
         imageMatrix.getValues(value)
         Log.e("touch", "scale ${Arrays.toString(value)}")
+    }
+
+    private fun judgeMove(downX: Float, downY: Float, moveX: Float, moveY: Float) : Boolean {
+        var distance = Math.sqrt((downX - moveX).toDouble() * (downX - moveX) + (downY - moveY) * (downY - moveY))
+        return distance > ViewConfiguration.get(context).scaledTouchSlop
     }
 }
