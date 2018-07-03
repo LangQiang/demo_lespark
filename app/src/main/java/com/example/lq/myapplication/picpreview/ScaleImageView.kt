@@ -151,6 +151,7 @@ class ScaleImageView @JvmOverloads constructor(
                 Log.e("touch", "ACTION_UP ")
                 if (mCurrentTouchMode == TOUCH_MODE_SLIDE_DOWN_2_FINISH) {
                     if (rv.translationY > mScreenHeight / 6) {
+                        zoomAnim(50)
                         (context as PicPreviewActivity).finishWithAnim()
                     } else {
                         releaseRvWithAnim()
@@ -159,6 +160,7 @@ class ScaleImageView @JvmOverloads constructor(
 
                 if (mCurrentTouchMode == TOUCH_MODE_SLIDE_DOUBLE_FINGER) {
                     if (rv.translationY > mScreenHeight / 6) {
+                        zoomAnim(50)
                         (context as PicPreviewActivity).finishWithAnim()
                     } else {
                         releaseRvWithAnim()
@@ -216,6 +218,10 @@ class ScaleImageView @JvmOverloads constructor(
     }
 
     private fun zoomAnim() {
+        zoomAnim(200)
+    }
+
+    private fun zoomAnim(duration : Long) {
         mAnimIsPlaying = true
         val startValue = FloatArray(9)
         val endValue = FloatArray(9)
@@ -227,7 +233,7 @@ class ScaleImageView @JvmOverloads constructor(
             mScaleMatrix.setValues(it.animatedValue as FloatArray)
             imageMatrix = mScaleMatrix
         })
-        valueAnim.duration = 200
+        valueAnim.duration = duration
         valueAnim.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator?) {
                 mAnimIsPlaying = false
@@ -280,7 +286,6 @@ class ScaleImageView @JvmOverloads constructor(
     }
 
     private fun scaleByFinger(event: MotionEvent) {
-        mScaleMatrix.set(mMatrix)
         mCurrentTouchMode = TOUCH_MODE_SLIDE_DOUBLE_FINGER
         //parent.requestDisallowInterceptTouchEvent(false)
         val x0 = event.getX(0)
@@ -299,6 +304,7 @@ class ScaleImageView @JvmOverloads constructor(
                 return
             }
         }
+        mScaleMatrix.set(mMatrix)
         mCurrentDistance += distance - mDistance
         var scale = (1 + mCurrentDistance / 400).toFloat() / mLastScale
         mScaleMatrix.postScale(scale, scale, mLastCenter.x, mLastCenter.y)

@@ -26,6 +26,7 @@ import com.example.lq.myapplication.colourful.ColourfulActivity;
 import com.example.lq.myapplication.encrypt.EncryptActivity;
 import com.example.lq.myapplication.flexible.FlexibleActivity;
 import com.example.lq.myapplication.global.App;
+import com.example.lq.myapplication.global.Constant;
 import com.example.lq.myapplication.levelup.LevelUpActivity;
 import com.example.lq.myapplication.likeview.LikeViewActivity;
 import com.example.lq.myapplication.ninepic.NinePicActivity;
@@ -47,17 +48,22 @@ import java.io.File;
 import java.io.FileWriter;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements App.ITest{
-
+    final ArrayList<Integer> a = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //b
         Log.e("ippp",Arrays.toString(";".split(";")));
+
+        for (int i = 0; i< 100000;i++) {
+            a.add(i);
+        }
         try {
             Log.e("ippp", InetAddress.getByName("1.1.1.1").toString());
         } catch (Exception e) {
@@ -121,7 +127,6 @@ public class MainActivity extends AppCompatActivity implements App.ITest{
                 startActivity(new Intent(MainActivity.this, NotifyActivity.class));
             }
         });
-        int a = R . string . app_name ;
 
         findViewById(R. id. sticky).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -200,9 +205,22 @@ public class MainActivity extends AppCompatActivity implements App.ITest{
         findViewById(R.id.cake_anim).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, AnimsActivity.class));
+                //startActivity(new Intent(MainActivity.this, AnimsActivity.class));
+                a.add(2);
             }
         });
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Constant.fun(a);
+                }catch (Exception e) {
+                    Log.e("aa","asf");
+                }
+
+            }
+        }).start();
+
 
     }
 
@@ -210,4 +228,5 @@ public class MainActivity extends AppCompatActivity implements App.ITest{
     public void test() {
         ToastUtil2.showToast("test is run");
     }
+
 }

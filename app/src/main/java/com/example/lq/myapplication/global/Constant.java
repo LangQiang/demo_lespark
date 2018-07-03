@@ -1,6 +1,7 @@
 package com.example.lq.myapplication.global;
 
 import android.content.Context;
+import android.os.SystemClock;
 
 import java.util.ArrayList;
 
@@ -10,4 +11,10 @@ import java.util.ArrayList;
 
 public class Constant {
     public static final ArrayList<Context> CONTEXTS = new ArrayList<>();
+
+    public static void fun(ArrayList<Integer> a) {
+        for (int o : a) {
+            SystemClock.sleep(1);
+        }
+    }
 }
