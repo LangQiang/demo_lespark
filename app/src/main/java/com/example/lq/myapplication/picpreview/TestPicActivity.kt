@@ -16,16 +16,30 @@ class TestPicActivity : AppCompatActivity() {
         for (i in 0 .. root_view.childCount - 1) {
             root_view.getChildAt(i).setOnClickListener({
 //                App.getInstance().invokeTestFun()
-                var mInfos = arrayListOf(PicViewInfo(R.drawable.aaa,iv1.x,iv1.y,iv1.width,iv1.height,i == 0),
-                        PicViewInfo(R.drawable.bbb,iv2.x,iv2.y,iv2.width,iv2.height,i == 1),
-                        PicViewInfo(R.drawable.ccc,iv3.x,iv3.y,iv3.width,iv3.height,i == 2),
-                        PicViewInfo(R.drawable.ddd,iv4.x,iv4.y,iv4.width,iv4.height,i == 3))
+                val arr = IntArray(2)
+                var mInfos = arrayListOf<PicViewInfo>()
+                iv1.getLocationOnScreen(arr)
+                val picViewInfo1 = PicViewInfo(R.drawable.aaa,arr[0].toFloat(),arr[1].toFloat(),iv1.width,iv1.height,i == 0)
+                mInfos.add(picViewInfo1)
+
+                iv2.getLocationOnScreen(arr)
+                val picViewInfo2 = PicViewInfo(R.drawable.bbb,arr[0].toFloat(),arr[1].toFloat(),iv2.width,iv2.height,i == 0)
+                mInfos.add(picViewInfo2)
+
+                iv3.getLocationOnScreen(arr)
+                val picViewInfo3 = PicViewInfo(R.drawable.ccc,arr[0].toFloat(),arr[1].toFloat(),iv3.width,iv3.height,i == 0)
+                mInfos.add(picViewInfo3)
+
+                iv4.getLocationOnScreen(arr)
+                val picViewInfo4 = PicViewInfo(R.drawable.ddd,arr[0].toFloat(),arr[1].toFloat(),iv4.width,iv4.height,i == 0)
+                mInfos.add(picViewInfo4)
                 var intent = Intent(this,PicPreviewActivity :: class.java)
                 intent.putParcelableArrayListExtra("pic_info",mInfos)
                 intent.putExtra("current_pos",i)
                 startActivity(intent)
                 Log.e("drawable","${iv1.drawable.intrinsicWidth} ${iv1.drawable.intrinsicHeight}")
-                Log.e("drawable", "${root_view.height}")
+                iv4.getLocationOnScreen(arr)
+                Log.e("drawable", "${root_view.height} ${iv4.x} ${iv4.y} ${arr[0]} ${arr[1]}")
             })
         }
     }

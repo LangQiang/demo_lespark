@@ -19,33 +19,10 @@ class MyViewGroup2 @JvmOverloads constructor(
     init {
     }
 
-    override fun measureChild(child: View?, parentWidthMeasureSpec: Int, parentHeightMeasureSpec: Int) {
-        super.measureChild(child, parentWidthMeasureSpec, parentHeightMeasureSpec)
-        Log.e("VIEWprocess", "$mTAG ---measureChild")
-    }
 
-    override fun measureChildren(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.measureChildren(widthMeasureSpec, heightMeasureSpec)
-        Log.e("VIEWprocess", "$mTAG ---measureChildren")
-    }
-
-    override fun measureChildWithMargins(child: View?, parentWidthMeasureSpec: Int, widthUsed: Int, parentHeightMeasureSpec: Int, heightUsed: Int) {
-        super.measureChildWithMargins(child, parentWidthMeasureSpec, widthUsed, parentHeightMeasureSpec, heightUsed)
-        Log.e("VIEWprocess", "$mTAG ---measureChildWithMargins")
-    }
-
-
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        Log.e("VIEWprocess", "$mTAG ---onMeasure")
-    }
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         Log.e("VIEWprocess", "$mTAG ---onLayout")
     }
 
-    override fun onDraw(canvas: Canvas?) {
-        super.onDraw(canvas)
-        Log.e("VIEWprocess", "$mTAG ---onDraw")
-    }
 }

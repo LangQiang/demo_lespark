@@ -18,21 +18,28 @@ import com.example.lq.myapplication.R
 import kotlinx.android.synthetic.main.activity_pic_preview.*
 import java.util.*
 import android.animation.PropertyValuesHolder
-import android.content.DialogInterface
-import android.text.TextUtils
 import android.view.*
-import android.view.animation.AccelerateInterpolator
 import android.view.animation.LinearInterpolator
+import kotlin.collections.ArrayList
 
 
 class PicPreviewActivity : AppCompatActivity() {
     //测试用
     private var translationX = 0f
     private var translationY = 0f
+    private var finishTranslationX = 0f
+    private var finishTranslationY = 0f
     private var scaleX = 0f
     private var scaleY = 0f
+    private var finishScaleX = 0f
+    private var finishScaleY = 0f
     //测试用
 
+    private var picInfos : ArrayList<PicViewInfo>?=null
+
+    private var lastState = -1
+    private var lastPos: Int = 0
+    private var currentPosition = -1
 
     @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,47 +54,81 @@ class PicPreviewActivity : AppCompatActivity() {
             window.statusBarColor = Color.TRANSPARENT
         }
         setContentView(R.layout.activity_pic_preview)
-        val picInfos = intent.getParcelableArrayListExtra<PicViewInfo>("pic_info")
+        picInfos = intent.getParcelableArrayListExtra<PicViewInfo>("pic_info")
         val currentPos = intent.getIntExtra("current_pos", 0)
         Log.e("picinfo", picInfos.toString())
-        val mAdapter = PicRvAdapter(this, picInfos)
-        pic_container.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        val snapHelper = PagerSnapHelper()
-        snapHelper.attachToRecyclerView(pic_container)
-        pic_container.adapter = mAdapter
-        pic_container.layoutManager.scrollToPosition(currentPos)
-        val picViewInfo = picInfos.get(currentPos)
-        val height = (getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.height
-        val width = (getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.width
-        //要计算
-        pic_container.pivotX = width.toFloat() / 2
-        pic_container.pivotY = height.toFloat() / 2
-        scaleX = picViewInfo.mWidth.toFloat() / width
-        scaleY = picViewInfo.mWidth.toFloat() / width
-        pic_container.scaleX = picViewInfo.mWidth.toFloat() / width
-        pic_container.scaleY = picViewInfo.mWidth.toFloat() / width
-        bg_view.alpha = 0.toFloat()
-        val bigCenterX = width / 2
-        val bigCenterY = height / 2
-        val smallCenterX = picViewInfo.mRawX + picViewInfo.mWidth / 2
-        val smallCenterY = picViewInfo.mRawY + height - 1860 + picViewInfo.mHeight / 2  //statusbar 需要处理
-        translationX = smallCenterX - bigCenterX
-        translationY = smallCenterY - bigCenterY
-//        pic_container.translationX = translationX
-//        pic_container.translationY = translationY
-        //动画
-        val pvhPicTranslationX = PropertyValuesHolder.ofFloat(View.TRANSLATION_X, translationX,0f)
-        val pvhPicTranslationY = PropertyValuesHolder.ofFloat(View.TRANSLATION_Y, translationY,0f)
-        val pvhPicScaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, 1f)
-        val pvhPicScaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, 1f)
-        val oa = ObjectAnimator.ofPropertyValuesHolder(pic_container, pvhPicTranslationX, pvhPicTranslationY, pvhPicScaleX, pvhPicScaleY)
-        oa.duration = 250
-        oa.interpolator = LinearInterpolator()
-        oa.start()
-        val oaBgAlpha = ObjectAnimator.ofFloat(bg_view, View.ALPHA, 0f,1f)
-        oaBgAlpha.duration = 180
-        oaBgAlpha.interpolator = LinearInterpolator()
-        oaBgAlpha.start()
+        picInfos?.let {
+            val mAdapter = PicRvAdapter(this, it)
+            pic_container.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+            val snapHelper = PagerSnapHelper()
+            snapHelper.attachToRecyclerView(pic_container)
+            pic_container.adapter = mAdapter
+            pic_container.layoutManager.scrollToPosition(currentPos)
+        }
+
+        pic_container.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                Log.e("video", "newState:" + newState)
+                if (lastState == 2 && newState == 1) {
+                    val firstVisibleItemPosition = (pic_container.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+                    if (firstVisibleItemPosition == 0 && lastPos != 0) {
+                        currentPosition = firstVisibleItemPosition
+                    }
+                }
+                lastState = newState
+                if (newState == 0) {
+                    val firstItemPosition = (pic_container.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+                    if (lastPos == firstItemPosition) {
+                        return
+                    } else {
+                        currentPosition = firstItemPosition
+                    }
+                }
+                Log.e("pos","$currentPosition")
+            }
+
+            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+            }
+        })
+        root_view.viewTreeObserver.addOnGlobalLayoutListener {
+            picInfos?.let {
+                val picViewInfo = it[currentPos]
+                val height = root_view.height
+                val width = root_view.width
+                Log.e("drawable","$width $height")
+                //要计算
+                val locationArr = IntArray(2)
+                root_view.getLocationOnScreen(locationArr)
+                pic_container.pivotX = width.toFloat() / 2
+                pic_container.pivotY = height.toFloat() / 2
+                scaleX = picViewInfo.mWidth.toFloat() / width
+                scaleY = picViewInfo.mWidth.toFloat() / width
+                pic_container.scaleX = picViewInfo.mWidth.toFloat() / width
+                pic_container.scaleY = picViewInfo.mWidth.toFloat() / width
+                bg_view.alpha = 0.toFloat()
+                val bigCenterX = width / 2 + locationArr[0]
+                val bigCenterY = height / 2 + locationArr[1]
+                val smallCenterX = picViewInfo.mRawX + picViewInfo.mWidth / 2
+                val smallCenterY = picViewInfo.mRawY + picViewInfo.mHeight / 2
+                translationX = smallCenterX - bigCenterX
+                translationY = smallCenterY - bigCenterY
+                //动画
+                val pvhPicTranslationX = PropertyValuesHolder.ofFloat(View.TRANSLATION_X, translationX,0f)
+                val pvhPicTranslationY = PropertyValuesHolder.ofFloat(View.TRANSLATION_Y, translationY,0f)
+                val pvhPicScaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, 1f)
+                val pvhPicScaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, 1f)
+                val oa = ObjectAnimator.ofPropertyValuesHolder(pic_container, pvhPicTranslationX, pvhPicTranslationY, pvhPicScaleX, pvhPicScaleY)
+                oa.duration = 250
+                oa.interpolator = LinearInterpolator()
+                oa.start()
+                val oaBgAlpha = ObjectAnimator.ofFloat(bg_view, View.ALPHA, 0f,1f)
+                oaBgAlpha.duration = 180
+                oaBgAlpha.interpolator = LinearInterpolator()
+                oaBgAlpha.start()
+            }
+        }
     }
 
     private class PicRvAdapter(context: Context, data: ArrayList<PicViewInfo>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -99,6 +140,10 @@ class PicPreviewActivity : AppCompatActivity() {
 
         override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder {
             val View = LayoutInflater.from(mContext).inflate(R.layout.pic_item, parent, false)
+            View.viewTreeObserver.addOnGlobalLayoutListener {
+                Log.e("adapter","LayoutInflater oncreateViewHolder")
+            }
+            Log.e("adapter","oncreateViewHolder")
             return PicHolder(View)
         }
 
@@ -116,20 +161,42 @@ class PicPreviewActivity : AppCompatActivity() {
         overridePendingTransition(0, 0)
     }
 
+    private fun setFinishAnimValueByPos(pos: Int) {
+        picInfos?.let {
+            val picViewInfo = it[pos]
+            val height = root_view.height
+            val width = root_view.width
+            //要计算
+            val locationArr = IntArray(2)
+            root_view.getLocationOnScreen(locationArr)
+            pic_container.pivotX = width.toFloat() / 2
+            pic_container.pivotY = height.toFloat() / 2
+            finishScaleX = picViewInfo.mWidth.toFloat() / width
+            finishScaleY = picViewInfo.mWidth.toFloat() / width
+            pic_container.scaleX = picViewInfo.mWidth.toFloat() / width
+            pic_container.scaleY = picViewInfo.mWidth.toFloat() / width
+            bg_view.alpha = 0.toFloat()
+            val bigCenterX = width / 2 + locationArr[0]
+            val bigCenterY = height / 2 + locationArr[1]
+            val smallCenterX = picViewInfo.mRawX + picViewInfo.mWidth / 2
+            val smallCenterY = picViewInfo.mRawY + picViewInfo.mHeight / 2
+            finishTranslationX = smallCenterX - bigCenterX
+            finishTranslationY = smallCenterY - bigCenterY
+        }
+    }
+
     fun finishWithAnim() {
+        var pos = (pic_container.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+        setFinishAnimValueByPos(pos)
         //退出动画
-        val pvhPicTranslationX = PropertyValuesHolder.ofFloat(View.TRANSLATION_X, pic_container.translationX,translationX)
-        val pvhPicTranslationY = PropertyValuesHolder.ofFloat(View.TRANSLATION_Y, pic_container.translationY,translationY)
-        val pvhPicScaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, scaleX)
-        val pvhPicScaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, scaleY)
+        val pvhPicTranslationX = PropertyValuesHolder.ofFloat(View.TRANSLATION_X, pic_container.translationX,finishTranslationX)
+        val pvhPicTranslationY = PropertyValuesHolder.ofFloat(View.TRANSLATION_Y, pic_container.translationY,finishTranslationY)
+        val pvhPicScaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, finishScaleX)
+        val pvhPicScaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, finishScaleY)
         val oa = ObjectAnimator.ofPropertyValuesHolder(pic_container, pvhPicTranslationX, pvhPicTranslationY, pvhPicScaleX, pvhPicScaleY)
         oa.duration = 250
         oa.interpolator = LinearInterpolator()
         oa.start()
-//        val oaBgAlpha = ObjectAnimator.ofFloat(bg_view, View.ALPHA, 0f)
-//        oaBgAlpha.duration = 180
-//        oaBgAlpha.interpolator = LinearInterpolator()
-//        oaBgAlpha.start()
         bg_view.alpha = 0f
         oa.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator?) {
@@ -147,4 +214,5 @@ class PicPreviewActivity : AppCompatActivity() {
         }
         return super.onKeyDown(keyCode, event)
     }
+
 }

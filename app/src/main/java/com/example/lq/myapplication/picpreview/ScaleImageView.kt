@@ -21,7 +21,7 @@ import java.util.*
  */
 class ScaleImageView @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : ImageView(context, attrs, defStyleAttr), ViewTreeObserver.OnGlobalLayoutListener {
+) : ImageView(context, attrs, defStyleAttr) {
 
     companion object {
         val TOUCH_MODE_SLIDE_DOWN_2_FINISH: Int = 2
@@ -51,22 +51,52 @@ class ScaleImageView @JvmOverloads constructor(
     private var mAnimIsPlaying = false
 
     init {
-
     }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
+        Log.e("adapter","onAttachedToWindow $this")
         var mParent = parent
-        while (mParent !is RecyclerView) {
+        while (mParent != null && mParent !is RecyclerView) {
             mParent = mParent.parent
         }
-        if (mParent is RecyclerView) {
+        if (mParent != null && mParent is RecyclerView) {
             rv = mParent
             view = (rv.parent as ViewGroup).getChildAt(0)
         }
         mScreenHeight = (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.height
-        viewTreeObserver.addOnGlobalLayoutListener(this)
+        //viewTreeObserver.addOnGlobalLayoutListener(this)
+//        this.post({
+//            val mTempSrc = RectF(0.0f, 0.0f, drawable.intrinsicWidth.toFloat(), drawable.intrinsicHeight.toFloat())
+//            val mTempDst = RectF(0.0f, 0.0f, width.toFloat(), height.toFloat())
+//            mMatrix.setRectToRect(mTempSrc, mTempDst, Matrix.ScaleToFit.CENTER)
+//            imageMatrix = mMatrix
+//            mSrcMatrix.set(mMatrix)
+//            val value = FloatArray(9)
+//            imageMatrix.getValues(value)
+//            mOriginalRatio = value[0]
+//            Log.e("matrix", Arrays.toString(value))
+//        })
     }
+
+    override fun onDraw(canvas: Canvas?) {
+        if (isInit && drawable != null && drawable.intrinsicWidth > 0 && drawable.intrinsicHeight > 0) {
+            isInit = false
+            val mTempSrc = RectF(0.0f, 0.0f, drawable.intrinsicWidth.toFloat(), drawable.intrinsicHeight.toFloat())
+            val mTempDst = RectF(0.0f, 0.0f, width.toFloat(), height.toFloat())
+            mMatrix.setRectToRect(mTempSrc, mTempDst, Matrix.ScaleToFit.CENTER)
+            imageMatrix = mMatrix
+            mSrcMatrix.set(mMatrix)
+            val value = FloatArray(9)
+            imageMatrix.getValues(value)
+            mOriginalRatio = value[0]
+            Log.e("matrix", Arrays.toString(value))
+        } else {
+            super.onDraw(canvas)
+        }
+    }
+
+
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         if (mAnimIsPlaying) {
@@ -246,32 +276,14 @@ class ScaleImageView @JvmOverloads constructor(
         mCurrentDistance = 0.0
     }
 
-    override fun onDraw(canvas: Canvas?) {
-        super.onDraw(canvas)
-        Log.e("dimean", "intrinsicWidth:${drawable.intrinsicWidth} intrinsicHeight:${drawable.intrinsicHeight}" +
-                " bounds.width(): ${drawable.bounds.width()}" +
-                " bounds.height(): ${drawable.bounds.height()}" +
-                " ${drawable.bounds.left} ${drawable.bounds.top} ${drawable.bounds.right} ${drawable.bounds.bottom}")
+    private var isInit : Boolean = true
 
-    }
+
 
     private fun getDistance(x0: Float, y0: Float, x1: Float, y1: Float): Double {
         return Math.sqrt((x1 - x0) * (x1 - x0).toDouble() + (y1 - y0) * (y1 - y0))
     }
 
-    override fun onGlobalLayout() {
-        viewTreeObserver.removeGlobalOnLayoutListener(this)
-
-        val mTempSrc = RectF(0.0f, 0.0f, drawable.intrinsicWidth.toFloat(), drawable.intrinsicHeight.toFloat())
-        val mTempDst = RectF(0.0f, 0.0f, width.toFloat(), height.toFloat())
-        mMatrix.setRectToRect(mTempSrc, mTempDst, Matrix.ScaleToFit.CENTER)
-        imageMatrix = mMatrix
-        mSrcMatrix.set(mMatrix)
-        val value = FloatArray(9)
-        imageMatrix.getValues(value)
-        mOriginalRatio = value[0]
-        Log.e("matrix", Arrays.toString(value))
-    }
 
     inner class ValueEvaluator : TypeEvaluator<Any> {
         val value = FloatArray(9)

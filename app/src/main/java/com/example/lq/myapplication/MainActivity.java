@@ -12,6 +12,7 @@ import android.os.Environment;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -33,6 +34,7 @@ import com.example.lq.myapplication.ninepic.NinePicActivity;
 import com.example.lq.myapplication.notify.NotifyActivity;
 import com.example.lq.myapplication.pathanim.PathAnimActivity;
 import com.example.lq.myapplication.picpreview.PicPreviewActivity;
+import com.example.lq.myapplication.picpreview.PicViewInfo;
 import com.example.lq.myapplication.picpreview.TestPicActivity;
 import com.example.lq.myapplication.ratio.RatioViewActivity;
 import com.example.lq.myapplication.stickylist.StickyListActivity;
@@ -58,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements App.ITest{
     final ArrayList<Integer> a = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         //b
         Log.e("ippp",Arrays.toString(";".split(";")));
 
@@ -89,6 +92,9 @@ public class MainActivity extends AppCompatActivity implements App.ITest{
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
         findViewById(R.id.encrypt).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -209,6 +215,7 @@ public class MainActivity extends AppCompatActivity implements App.ITest{
                 a.add(2);
             }
         });
+
         new Thread(new Runnable() {
             @Override
             public void run() {
