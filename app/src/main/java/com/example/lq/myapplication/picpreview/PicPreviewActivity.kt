@@ -65,34 +65,7 @@ class PicPreviewActivity : AppCompatActivity() {
             pic_container.adapter = mAdapter
             pic_container.layoutManager.scrollToPosition(currentPos)
         }
-
-        pic_container.addOnScrollListener(object : RecyclerView.OnScrollListener(){
-            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                Log.e("video", "newState:" + newState)
-                if (lastState == 2 && newState == 1) {
-                    val firstVisibleItemPosition = (pic_container.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
-                    if (firstVisibleItemPosition == 0 && lastPos != 0) {
-                        currentPosition = firstVisibleItemPosition
-                    }
-                }
-                lastState = newState
-                if (newState == 0) {
-                    val firstItemPosition = (pic_container.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
-                    if (lastPos == firstItemPosition) {
-                        return
-                    } else {
-                        currentPosition = firstItemPosition
-                    }
-                }
-                Log.e("pos","$currentPosition")
-            }
-
-            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-            }
-        })
-        root_view.viewTreeObserver.addOnGlobalLayoutListener {
+        root_view.post({
             picInfos?.let {
                 val picViewInfo = it[currentPos]
                 val height = root_view.height
@@ -128,7 +101,7 @@ class PicPreviewActivity : AppCompatActivity() {
                 oaBgAlpha.interpolator = LinearInterpolator()
                 oaBgAlpha.start()
             }
-        }
+        })
     }
 
     private class PicRvAdapter(context: Context, data: ArrayList<PicViewInfo>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
