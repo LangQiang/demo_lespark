@@ -1,6 +1,7 @@
 package com.example.lq.myapplication.stickylist;
 
 import android.content.Context;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,29 +19,68 @@ import com.example.lq.myapplication.R;
 import com.example.lq.myapplication.swipeback.SwipeBackActivity;
 import com.example.lq.myapplication.widget.FinishActivity;
 
+import java.util.ArrayList;
+
 public class StickyListActivity extends SwipeBackActivity {
     private RecyclerView rv;
+    private ArrayList<String> list;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sticky_list);
-        ListView lv = findViewById(R.id.sticky_list_view);
-        lv.setAdapter(new MyListAdapter(this));
+        final ListView lv = findViewById(R.id.sticky_list_view);
+        list = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            list.add("aaa");
+        }
+        final MyListAdapter myListAdapter = new MyListAdapter(this);
+        lv.setAdapter(myListAdapter);
         ImageView iv = findViewById(R.id.iv);
-        RelativeLayout parent = (RelativeLayout) iv.getParent();
-        parent.removeView(iv);
-        lv.addHeaderView(iv);
-        ScrollContainView scrollContainView = findViewById(R.id.scv);
+//        RelativeLayout parent = (RelativeLayout) iv.getParent();
+//        parent.removeView(iv);
+//        lv.addHeaderView(iv);
+//        ScrollContainView scrollContainView = findViewById(R.id.scv);
+//        iv.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
+        list.add("v");
+        myListAdapter.notifyDataSetChanged();
+        lv.smoothScrollToPosition(myListAdapter.getCount() - 1);
 
+        iv.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+//                list.add("");
+//                myListAdapter.notifyDataSetChanged();
+//                lv.smoothScrollToPosition(myListAdapter.getCount() - 1);
+            }
+        },500);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                SystemClock.sleep(300);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        list.clear();
+
+                    }
+                });
+            }
+        }).start();
     }
-    static class MyListAdapter extends BaseAdapter{
+     class MyListAdapter extends BaseAdapter{
         Context context;
         public MyListAdapter(Context context) {
             this.context = context;
         }
         @Override
         public int getCount() {
-            return 100;
+            return list.size();
         }
 
         @Override

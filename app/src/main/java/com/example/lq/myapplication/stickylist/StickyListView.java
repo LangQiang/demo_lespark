@@ -34,68 +34,68 @@ public class StickyListView extends ListView {
 
     float totalY;
 
-    @Override
-    public boolean onTouchEvent(MotionEvent ev) {
-        Log.e("list",ev.getRawX() + "  " + ev.getRawY());
-        switch (ev.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                sY = ev.getRawY();
-                totalY = 0;
-                break;
-            case MotionEvent.ACTION_MOVE:
-                Log.e("list",canScrollVertically(-1) + "");
-                float mY = ev.getRawY();
-                float dY = mY - sY;
-
-                if (dY > 0 && !canScrollVertically(-1)) {
-                    totalY += dY;
-                    ViewGroup.LayoutParams layoutParams = header.getLayoutParams();
-                    layoutParams.height = sHeight + (int)((totalY) / (1 + totalY / 1920));
-                    currentHeight = layoutParams.height;
-                    header.setLayoutParams(layoutParams);
-                    sY = mY;
-                    return true;
-                }
-                if (dY < 0 && currentHeight != sHeight && totalY > 0) {
-                    totalY += dY;
-                    if (totalY < 0 ) {
-                        totalY = 0;
-                    }
-                    ViewGroup.LayoutParams layoutParams = header.getLayoutParams();
-                    layoutParams.height = sHeight + (int)((totalY) / (1 + totalY / 1920));
-                    currentHeight = layoutParams.height;
-                    header.setLayoutParams(layoutParams);
-                    sY = mY;
-                    return true;
-                }
-
-                sY = mY;
-                break;
-            case MotionEvent.ACTION_UP:
-                ValueAnimator valueAnimator = ValueAnimator.ofInt(currentHeight,sHeight);
-                valueAnimator.setDuration(200);
-                valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                    @Override
-                    public void onAnimationUpdate(ValueAnimator animation) {
-                        int value = (int) animation.getAnimatedValue();
-                        ViewGroup.LayoutParams layoutParams = header.getLayoutParams();
-                        layoutParams.height = value;
-                        header.setLayoutParams(layoutParams);
-                    }
-                });
-                valueAnimator.start();
-                currentHeight = sHeight;
-                break;
-        }
-        return super.onTouchEvent(ev);
-    }
-
-    @Override
-    public void addHeaderView(View v) {
-        super.addHeaderView(v);
-        header = v;
-        layoutParams = header.getLayoutParams();
-        sHeight = layoutParams.height;
-        currentHeight = sHeight;
-    }
+//    @Override
+//    public boolean onTouchEvent(MotionEvent ev) {
+//        Log.e("list",ev.getRawX() + "  " + ev.getRawY());
+//        switch (ev.getAction()) {
+//            case MotionEvent.ACTION_DOWN:
+//                sY = ev.getRawY();
+//                totalY = 0;
+//                break;
+//            case MotionEvent.ACTION_MOVE:
+//                Log.e("list",canScrollVertically(-1) + "");
+//                float mY = ev.getRawY();
+//                float dY = mY - sY;
+//
+//                if (dY > 0 && !canScrollVertically(-1)) {
+//                    totalY += dY;
+//                    ViewGroup.LayoutParams layoutParams = header.getLayoutParams();
+//                    layoutParams.height = sHeight + (int)((totalY) / (1 + totalY / 1920));
+//                    currentHeight = layoutParams.height;
+//                    header.setLayoutParams(layoutParams);
+//                    sY = mY;
+//                    return true;
+//                }
+//                if (dY < 0 && currentHeight != sHeight && totalY > 0) {
+//                    totalY += dY;
+//                    if (totalY < 0 ) {
+//                        totalY = 0;
+//                    }
+//                    ViewGroup.LayoutParams layoutParams = header.getLayoutParams();
+//                    layoutParams.height = sHeight + (int)((totalY) / (1 + totalY / 1920));
+//                    currentHeight = layoutParams.height;
+//                    header.setLayoutParams(layoutParams);
+//                    sY = mY;
+//                    return true;
+//                }
+//
+//                sY = mY;
+//                break;
+//            case MotionEvent.ACTION_UP:
+//                ValueAnimator valueAnimator = ValueAnimator.ofInt(currentHeight,sHeight);
+//                valueAnimator.setDuration(200);
+//                valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+//                    @Override
+//                    public void onAnimationUpdate(ValueAnimator animation) {
+//                        int value = (int) animation.getAnimatedValue();
+//                        ViewGroup.LayoutParams layoutParams = header.getLayoutParams();
+//                        layoutParams.height = value;
+//                        header.setLayoutParams(layoutParams);
+//                    }
+//                });
+//                valueAnimator.start();
+//                currentHeight = sHeight;
+//                break;
+//        }
+//        return super.onTouchEvent(ev);
+//    }
+//
+//    @Override
+//    public void addHeaderView(View v) {
+//        super.addHeaderView(v);
+//        header = v;
+//        layoutParams = header.getLayoutParams();
+//        sHeight = layoutParams.height;
+//        currentHeight = sHeight;
+//    }
 }
