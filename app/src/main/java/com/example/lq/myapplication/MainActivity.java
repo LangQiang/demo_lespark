@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.example.lq.myapplication.anims.AnimsActivity;
+import com.example.lq.myapplication.anims.TravelWithYouActivity;
 import com.example.lq.myapplication.choice.ChoiceActivity;
 import com.example.lq.myapplication.collapsible.CollapsibleActivity;
 import com.example.lq.myapplication.colourful.ColourfulActivity;
@@ -193,8 +195,15 @@ public class MainActivity extends AppCompatActivity implements App.ITest{
         findViewById(R.id.cake_anim).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //startActivity(new Intent(MainActivity.this, AnimsActivity.class));
-                a.add(2);
+                startActivity(new Intent(MainActivity.this, AnimsActivity.class));
+//                a.add(2);
+            }
+        });
+
+        findViewById(R.id.travel_with_you).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, TravelWithYouActivity.class));
             }
         });
         try {

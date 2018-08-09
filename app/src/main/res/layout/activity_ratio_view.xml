@@ -1,36 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="30dp"
+    android:layout_height="match_parent"
     android:background="#ffffff"
     tools:context="com.example.lq.myapplication.ratio.RatioViewActivity">
 
     <com.example.lq.myapplication.ratio.MyViewGroup2
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="#3333ff3f">
 
-        <!--<com.example.lq.myapplication.ratio.MyViewGroup-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:background="#3333ff3f">-->
-
-            <!--<com.example.lq.myapplication.ratio.MyView-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:background="#33ff33ff" />-->
-        <!--</com.example.lq.myapplication.ratio.MyViewGroup>-->
-        <!--<com.example.lq.myapplication.ratio.MyViewGroup-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:background="#3333ff3f">-->
-
-            <!--<com.example.lq.myapplication.ratio.MyView-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:background="#33ff33ff" />-->
-        <!--</com.example.lq.myapplication.ratio.MyViewGroup>-->
+        <View
+            android:layout_width="100dp"
+            android:layout_height="100dp"></View>
     </com.example.lq.myapplication.ratio.MyViewGroup2>
-</LinearLayout>
+</RelativeLayout>

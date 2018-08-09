@@ -11,7 +11,6 @@ import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Debug;
 import android.os.SystemClock;
-import android.support.v4.BuildConfig;
 import android.support.v4.util.LruCache;
 import android.util.AttributeSet;
 import android.util.Log;

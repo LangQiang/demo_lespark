@@ -105,13 +105,12 @@ class PicPreviewActivity : AppCompatActivity() {
     }
 
     private class PicRvAdapter(context: Context, data: ArrayList<PicViewInfo>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-        var mContext: Context = context
-        var mData: ArrayList<PicViewInfo> = data
-        override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
+        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             (holder as PicHolder).mPicIv.setImageResource(mData.get(position).mUrl)
+
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             val View = LayoutInflater.from(mContext).inflate(R.layout.pic_item, parent, false)
             View.viewTreeObserver.addOnGlobalLayoutListener {
                 Log.e("adapter","LayoutInflater oncreateViewHolder")
@@ -119,6 +118,9 @@ class PicPreviewActivity : AppCompatActivity() {
             Log.e("adapter","oncreateViewHolder")
             return PicHolder(View)
         }
+
+        var mContext: Context = context
+        var mData: ArrayList<PicViewInfo> = data
 
         override fun getItemCount(): Int {
             return mData.size
