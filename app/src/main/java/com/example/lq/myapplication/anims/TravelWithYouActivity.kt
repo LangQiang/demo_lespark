@@ -48,7 +48,7 @@ class TravelWithYouActivity : AppCompatActivity() {
         seek.progress = 30
     }
 
-    private fun show(rl: RelativeLayout?) {
+    public fun show(rl: RelativeLayout?) {
         rl?.removeAllViews()
         val view = View.inflate(this, R.layout.anim_travel_with_you_layout, null)
         rl?.addView(view, RelativeLayout.LayoutParams(-1, -1))
@@ -85,6 +85,27 @@ class TravelWithYouActivity : AppCompatActivity() {
                 val travelMapleLeftView = view.findViewById<View>(R.id.travel_maple_left)
                 val travelMapleRightView = view.findViewById<View>(R.id.travel_maple_right)
                 val travelPlaneView = view.findViewById<View>(R.id.travel_plane)
+                val animContainerView = view.findViewById<View>(R.id.anim_container)
+                val travelBoat1 = view.findViewById<View>(R.id.travel_boat1)
+                val travelBoat2 = view.findViewById<View>(R.id.travel_boat2)
+
+                val travelMaple1 = view.findViewById<View>(R.id.travel_maple1)
+                val travelMaple2 = view.findViewById<View>(R.id.travel_maple2)
+                val travelMaple3 = view.findViewById<View>(R.id.travel_maple3)
+                val travelMaple4 = view.findViewById<View>(R.id.travel_maple4)
+                val travelMaple5 = view.findViewById<View>(R.id.travel_maple5)
+                val travelMaple6 = view.findViewById<View>(R.id.travel_maple6)
+
+                val travelMaples = arrayOf(travelMaple1,
+                        travelMaple2,
+                        travelMaple3,
+                        travelMaple4,
+                        travelMaple5,
+                        travelMaple6)
+                for (travelMaple in travelMaples) {
+                    travelMaple.alpha = 0f
+                }
+
 
                 val balloonViews = arrayOf(travelBalloonView1,
                         travelBalloonView2,
@@ -103,13 +124,56 @@ class TravelWithYouActivity : AppCompatActivity() {
 
                 val animSet = AnimatorSet()
                 //18s
-                val camelDuration = setDuration(2500)
-                val carRound1Duration = setDuration(800)
+                val camelDuration = setDuration(2000)
+                val carRound1Duration = setDuration(650)
                 val avatarTransRound2Duration = setDuration(1300)
                 val transitionDuration = setDuration(750)
+                val random = Random()
+
+
+                //枫叶落
+                val X1 = UIHelper.dip2px(15.toDouble()).toFloat()
+                val X2 = UIHelper.dip2px(5.toDouble()).toFloat()
+                val X3 = UIHelper.dip2px(-5.toDouble()).toFloat()
+                val X4 = UIHelper.dip2px(-15.toDouble()).toFloat()
+                val maplesAnimTransY = PropertyValuesHolder.ofFloat(View.TRANSLATION_Y, UIHelper.dip2px(100.toDouble()).toFloat())
+                val mapleAnimTransX1 = PropertyValuesHolder.ofFloat(View.TRANSLATION_X, X2, X1)
+                val mapleAnimTransX2 = PropertyValuesHolder.ofFloat(View.TRANSLATION_X, X2, 0f, X3)
+                val mapleAnimTransX3 = PropertyValuesHolder.ofFloat(View.TRANSLATION_X, X3, 0f, X2)
+                val mapleanims = arrayOfNulls<ObjectAnimator>(6)
+                val mapleanims1 = arrayOfNulls<ObjectAnimator>(6)
+                val mapleanims2 = arrayOfNulls<ObjectAnimator>(6)
+
+                for (i in 0..5) {
+                    mapleanims1[i] = ObjectAnimator.ofFloat(travelMaples[i],View.ALPHA,1f)
+                    mapleanims1[i]?.duration = setDuration(395)
+                    mapleanims2[i] = ObjectAnimator.ofFloat(travelMaples[i],View.ALPHA,0f)
+                    mapleanims2[i]?.duration = setDuration(200)
+                    when (i % 3) {
+                        0 ->
+                            mapleanims[i] = ObjectAnimator.ofPropertyValuesHolder(travelMaples[i], maplesAnimTransY, mapleAnimTransX1)
+                        1 ->
+                            mapleanims[i] = ObjectAnimator.ofPropertyValuesHolder(travelMaples[i], maplesAnimTransY, mapleAnimTransX2)
+                        else ->
+                            mapleanims[i] = ObjectAnimator.ofPropertyValuesHolder(travelMaples[i], maplesAnimTransY, mapleAnimTransX3)
+                    }
+                    mapleanims[i]?.duration = setDuration(2000)
+                    mapleanims[i]?.addListener(object : AnimatorListenerAdapter(){
+                        override fun onAnimationStart(animation: Animator?) {
+                            mapleanims1[i]?.start()
+                        }
+
+                        override fun onAnimationEnd(animation: Animator?) {
+                            mapleanims2[i]?.start()
+                        }
+                    })
+                }
+                mapleanims[0]?.startDelay = setDuration(800)
+                mapleanims[1]?.startDelay = setDuration(800)
+                mapleanims[4]?.startDelay = setDuration(800)
+                mapleanims[5]?.startDelay = setDuration(800)
 
                 //樱花飘飘
-                val random = Random()
                 val diffusionAnim = DiffusionAnimator.ofCustomPosition(travelFlowerContainer, 20, diffusionSrc, object : DiffusionAnimator.CustomInitViewPosition {
                     override fun initViewPosition(list: ArrayList<DiffusionAnimator.ParticleAnimBean>?, width: Int, height: Int, density: Int, duration: Int) {
                         if (list != null) {
@@ -136,7 +200,7 @@ class TravelWithYouActivity : AppCompatActivity() {
                                 val valueAnimator = ValueAnimator.ofFloat(0f, 1f)
                                 particleAnimBean.valueAnimator = valueAnimator
                                 valueAnimator.duration = (2000 + random.nextInt(600) - 300).toLong()
-                                valueAnimator.startDelay = random.nextInt((3000 * 1.5).toInt()).toLong()
+                                valueAnimator.startDelay = random.nextInt((2000 * 1.5).toInt()).toLong()
                                 valueAnimator.addUpdateListener { animation ->
                                     val pointF = particleAnimBean.bezierEvaluator.evaluate(animation.animatedValue as Float, particleAnimBean.startPoint, particleAnimBean.endPoint)
                                     particleAnimBean.imageView.setX(pointF.x.toFloat())
@@ -183,24 +247,126 @@ class TravelWithYouActivity : AppCompatActivity() {
                         camelScaleY)
                 camelAnim.duration = camelDuration
 
+                //头像
+                travelAvatarLeft.alpha = 0f
+                travelAvatarRight.alpha = 0f
+                travelAvatarLeft.scaleX = 1.05f
+                travelAvatarLeft.scaleY = 1.05f
+                travelAvatarRight.scaleY = 1.05f
+                travelAvatarRight.scaleX = 1.05f
+
+                val transYLeft3 = travelPlaneView.bottom - travelAvatarLeft.bottom + UIHelper.dip2px(130.toDouble()) - travelPlaneView.height - UIHelper.dip2px(20.toDouble())
+
+                val avatarLeftAlphaAnimRound1 = ObjectAnimator.ofFloat(travelAvatarLeft, View.ALPHA, 1f)
+                avatarLeftAlphaAnimRound1.duration = carRound1Duration
+                val avatarRightAlphaAnimRound1 = ObjectAnimator.ofFloat(travelAvatarRight, View.ALPHA, 1f)
+                avatarRightAlphaAnimRound1.duration = carRound1Duration
+                val avatarTransY1 = UIHelper.dip2px(-30.toDouble()).toFloat()
+                val avatarLeftTransYAnimRound2 = ObjectAnimator.ofFloat(travelAvatarLeft, View.TRANSLATION_Y, avatarTransY1)
+                avatarLeftTransYAnimRound2.duration = avatarTransRound2Duration
+                val avatarRightTransYAnimRound2 = ObjectAnimator.ofFloat(travelAvatarRight, View.TRANSLATION_Y, avatarTransY1)
+                avatarRightTransYAnimRound2.duration = avatarTransRound2Duration
+
+                val avatarLeftScaleX = PropertyValuesHolder.ofFloat(View.SCALE_X,
+                        1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f,
+                        1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f)
+                val avatarLeftScaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y,
+                        1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f,
+                        1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f)
+                val avatarLeftAnimRound3 = ObjectAnimator.ofPropertyValuesHolder(travelAvatarLeft, avatarLeftScaleX, avatarLeftScaleY)
+                avatarLeftAnimRound3.duration = setDuration(13000)
+
+                val avatarRightScaleX = PropertyValuesHolder.ofFloat(View.SCALE_X,
+                        1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f,
+                        1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f)
+                val avatarRightScaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y,
+                        1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f,
+                        1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f)
+                val avatarRightAnimRound3 = ObjectAnimator.ofPropertyValuesHolder(travelAvatarRight, avatarRightScaleX, avatarRightScaleY)
+                avatarRightAnimRound3.duration = setDuration(13000)
+
+                val avatarTransY2 =
+                        //UIHelper.dip2px(-250.toDouble()).toFloat()
+                        transYLeft3.toFloat() + avatarTransY1
+                val avatarTransY2_2 =
+                        //UIHelper.dip2px(-250.toDouble()).toFloat()
+                        transYLeft3.toFloat() + avatarTransY1 + UIHelper.dip2px(10.toDouble())
+                val avatarLeftTransYAnimRound3 = ObjectAnimator.ofFloat(travelAvatarLeft, View.TRANSLATION_Y, avatarTransY2_2)
+                avatarLeftTransYAnimRound3.duration = setDuration(833)
+                val avatarRightTransYAnimRound3 = ObjectAnimator.ofFloat(travelAvatarRight, View.TRANSLATION_Y, avatarTransY2)
+                avatarRightTransYAnimRound3.duration = setDuration(833)
+
+                val avatarTransX = travelAvatarLeft.translationX + UIHelper.dip2px(rootWidth.toDouble()).toFloat()
+                val avatarTransY = UIHelper.dip2px(-10.toDouble()).toFloat() + avatarTransY2
+                val avatarTransY_2 = UIHelper.dip2px(-10.toDouble()).toFloat() + avatarTransY2_2
+                val avatarTransXAnim = PropertyValuesHolder.ofFloat(View.TRANSLATION_X, avatarTransX)
+                val avatarTransYAnim = PropertyValuesHolder.ofFloat(View.TRANSLATION_Y, avatarTransY)
+                val avatarTransYAnim22 = PropertyValuesHolder.ofFloat(View.TRANSLATION_Y, avatarTransY_2)
+                val avatarLeftTransYAnimRound4 = ObjectAnimator.ofPropertyValuesHolder(travelAvatarLeft, avatarTransXAnim, avatarTransYAnim22)
+                avatarLeftTransYAnimRound4.duration = setDuration(1500)
+                val avatarRightTransYAnimRound4 = ObjectAnimator.ofPropertyValuesHolder(travelAvatarRight, avatarTransXAnim, avatarTransYAnim)
+                avatarRightTransYAnimRound4.duration = setDuration(1500)
+
                 //灰机来了
-                val planeTransX1 = PropertyValuesHolder.ofFloat(View.TRANSLATION_X,UIHelper.dip2px(360.toDouble()).toFloat())
-                val planeTransY1 = PropertyValuesHolder.ofFloat(View.TRANSLATION_Y,UIHelper.dip2px(100.toDouble()).toFloat())
-                val planeAnim1 = ObjectAnimator.ofPropertyValuesHolder(travelPlaneView,planeTransX1,planeTransY1)
-                planeAnim1.duration = setDuration(1500)
+                val pTransX1 = UIHelper.dip2px(340.toDouble()).toFloat()
+                val pTransY1 = UIHelper.dip2px(100.toDouble()).toFloat()
+                val planeTransX1 = PropertyValuesHolder.ofFloat(View.TRANSLATION_X, pTransX1)
+                val planeTransY1 = PropertyValuesHolder.ofFloat(View.TRANSLATION_Y, pTransY1)
+                val planeScaleX1 = PropertyValuesHolder.ofFloat(View.SCALE_X, 1f)
+                val planeScaleY1 = PropertyValuesHolder.ofFloat(View.SCALE_Y, 1f)
+                val planeAnim1 = ObjectAnimator.ofPropertyValuesHolder(travelPlaneView,
+                        planeTransX1,
+                        planeTransY1,
+                        planeScaleX1,
+                        planeScaleY1)
+                planeAnim1.duration = setDuration(1400)
+
+
+                val pTransX2 = pTransX1 + UIHelper.dip2px(20.toDouble()).toFloat()
+                val pTransY2 = pTransY1 + UIHelper.dip2px(6.toDouble()).toFloat()
+                val planeTransX2 = PropertyValuesHolder.ofFloat(View.TRANSLATION_X, pTransX1, pTransX2, pTransX1)
+                val planeTransY2 = PropertyValuesHolder.ofFloat(View.TRANSLATION_Y, pTransY1, pTransY2, pTransY1)
+                val planeAnim2 = ObjectAnimator.ofPropertyValuesHolder(travelPlaneView,
+                        planeTransX2,
+                        planeTransY2)
+                planeAnim2.duration = setDuration(1500)
+
+                val planeScaleX3 = PropertyValuesHolder.ofFloat(View.SCALE_X, 1.3f)
+                val planeScaleY3 = PropertyValuesHolder.ofFloat(View.SCALE_Y, 1.3f)
+                val pTransX3 = pTransX1 + UIHelper.dip2px(rootWidth.toDouble()).toFloat()
+                val pTransY3 = pTransY1 + UIHelper.dip2px(10.toDouble()).toFloat()
+                val planeTransX3 = PropertyValuesHolder.ofFloat(View.TRANSLATION_X, pTransX3)
+                val planeTransY3 = PropertyValuesHolder.ofFloat(View.TRANSLATION_Y, pTransY3)
+                val planeAnim3 = ObjectAnimator.ofPropertyValuesHolder(travelPlaneView, planeTransX3, planeTransY3, planeScaleX3, planeScaleY3)
+                planeAnim3.duration = setDuration(1500)
+
+
+                planeAnim1.addListener(object : AnimatorListenerAdapter() {
+
+                    override fun onAnimationStart(animation: Animator?) {
+                        travelPlaneView.postDelayed({
+                            avatarRightTransYAnimRound3.start()
+                            avatarLeftTransYAnimRound3.start()
+                        }, 583)
+                    }
+                })
+
+
+                val animContainerViewAnim = ObjectAnimator.ofFloat(animContainerView, View.ALPHA, 0f)
+                animContainerViewAnim.duration = setDuration(400)
 
 
                 //枫叶动
                 travelMapleLeftView.alpha = 0f
                 travelMapleRightView.alpha = 0f
-                val mapleLeftAlphaAnim1 = ObjectAnimator.ofFloat(travelMapleLeftView,View.ALPHA,1f)
+                val mapleLeftAlphaAnim1 = ObjectAnimator.ofFloat(travelMapleLeftView, View.ALPHA, 1f)
                 mapleLeftAlphaAnim1.duration = transitionDuration / 2
-                val mapleRightAlphaAnim1 = ObjectAnimator.ofFloat(travelMapleRightView,View.ALPHA,1f)
+                val mapleRightAlphaAnim1 = ObjectAnimator.ofFloat(travelMapleRightView, View.ALPHA, 1f)
                 mapleRightAlphaAnim1.duration = transitionDuration / 2
-                val mapleLeftAnim = ObjectAnimator.ofFloat(travelMapleLeftView, View.ROTATION, -10f, 0f, -10f, 0f, -10f, 0f, -10f, 0f, -10f, 0f, -10f, 0f, -10f, 0f, -10f, 0f)
-                mapleLeftAnim.duration = setDuration(3000)
-                val mapleRightAnim = ObjectAnimator.ofFloat(travelMapleRightView, View.ROTATION, 10f, 0f, 10f, 0f, 10f, 0f, 10f, 0f, 10f, 0f, 10f, 0f, 10f, 0f, 10f, 0f)
-                mapleRightAnim.duration = setDuration(3000)
+                val mapleLeftAnim = ObjectAnimator.ofFloat(travelMapleLeftView, View.ROTATION, 0f, -10f, 0f, -10f, 0f, -10f, 0f, -10f, 0f)
+                mapleLeftAnim.duration = setDuration(3166)
+                val mapleRightAnim = ObjectAnimator.ofFloat(travelMapleRightView, View.ROTATION, 0f, 10f, 0f, 10f, 0f, 10f, 0f, 10f, 0f)
+                mapleRightAnim.duration = setDuration(3166)
 
                 //薰衣草
                 travelGrassLeftView.alpha = 0f
@@ -219,30 +385,56 @@ class TravelWithYouActivity : AppCompatActivity() {
                 val grassRightAnim = ObjectAnimator.ofPropertyValuesHolder(travelGrassRightView, grassTransX2, grassTransY, grassRotate)
                 grassRightAnim.duration = setDuration(3500)
 
+
+                //船
+                travelBoat1.alpha = 0f
+                travelBoat2.alpha = 0f
+                val travelBoat1AlphaAnim = ObjectAnimator.ofFloat(travelBoat1, View.ALPHA, 1f)
+                travelBoat1AlphaAnim.duration = setDuration(500)
+                val travelBoat2AlphaAnim = ObjectAnimator.ofFloat(travelBoat2, View.ALPHA, 1f)
+                travelBoat2AlphaAnim.duration = setDuration(500)
+                val travelBoatTransY = PropertyValuesHolder.ofFloat(View.TRANSLATION_Y, UIHelper.dip2px(10.toDouble()).toFloat())
+                val travelBoatTransX = PropertyValuesHolder.ofFloat(View.TRANSLATION_X, UIHelper.dip2px(-30.toDouble()).toFloat())
+                val travelBoat1Anim = ObjectAnimator.ofPropertyValuesHolder(travelBoat1, travelBoatTransY, travelBoatTransX)
+                travelBoat1Anim.duration = setDuration(3333)
+                val travelBoat2Anim = ObjectAnimator.ofPropertyValuesHolder(travelBoat2, travelBoatTransY, travelBoatTransX)
+                travelBoat2Anim.duration = setDuration(3333)
+                val travelBoat1AlphaAnim2 = ObjectAnimator.ofFloat(travelBoat1, View.ALPHA, 0f)
+                travelBoat1AlphaAnim2.duration = setDuration(375)
+                val travelBoat2AlphaAnim2 = ObjectAnimator.ofFloat(travelBoat2, View.ALPHA, 0f)
+                travelBoat2AlphaAnim2.duration = setDuration(375)
+
+
                 //椰子树
                 travelYeZiShuLeftView.alpha = 0f
                 travelYeZiShuRightView.alpha = 0f
+                travelYeZiShuLeftView.pivotX = travelYeZiShuLeftView.width / 2f
+                travelYeZiShuLeftView.pivotY = travelYeZiShuLeftView.height.toFloat()
                 val yezishuLeftAlphaAnim = ObjectAnimator.ofFloat(travelYeZiShuLeftView, View.ALPHA, 1f)
                 yezishuLeftAlphaAnim.duration = setDuration(500)
                 val yezishuRightAlphaAnim = ObjectAnimator.ofFloat(travelYeZiShuRightView, View.ALPHA, 1f)
                 yezishuRightAlphaAnim.duration = setDuration(500)
-                val yezishuLeftRotate = PropertyValuesHolder.ofFloat(View.ROTATION, -5f, 0f, -5f, 0f, -5f, 0f, -5f, 0f)
-                val yezishuRightRotate = PropertyValuesHolder.ofFloat(View.ROTATION, 5f, 0f, 5f, 0f, 5f, 0f, 5f, 0f)
+                val yezishuLeftRotate = PropertyValuesHolder.ofFloat(View.ROTATION, 0f, -5f, 0f, -5f, 0f, -5f, 0f, -5f, 0f)
+                val yezishuRightRotate = PropertyValuesHolder.ofFloat(View.ROTATION, 0f, 5f, 0f, 5f, 0f, 5f, 0f, 5f, 0f)
                 val yezishuLeftScaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, 1.3f)
                 val yezishuLeftScaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, 1.3f)
                 val yezishuLeftTransY = PropertyValuesHolder.ofFloat(View.TRANSLATION_Y, 100f)
+                val yezishuLeftTransX1 = PropertyValuesHolder.ofFloat(View.TRANSLATION_X, -50f)
+                val yezishuLeftTransX2 = PropertyValuesHolder.ofFloat(View.TRANSLATION_X, 50f)
                 val yezishuLeftAnim = ObjectAnimator.ofPropertyValuesHolder(travelYeZiShuLeftView,
                         yezishuLeftRotate,
                         yezishuLeftScaleX,
                         yezishuLeftScaleY,
+                        yezishuLeftTransX1,
                         yezishuLeftTransY)
-                yezishuLeftAnim.duration = setDuration(3500)
+                yezishuLeftAnim.duration = setDuration(3200)
                 val yezishuRightAnim = ObjectAnimator.ofPropertyValuesHolder(travelYeZiShuRightView,
                         yezishuRightRotate,
                         yezishuLeftScaleX,
                         yezishuLeftScaleY,
+                        yezishuLeftTransX2,
                         yezishuLeftTransY)
-                yezishuRightAnim.duration = setDuration(3500)
+                yezishuRightAnim.duration = setDuration(3200)
 
                 val yeziHideLeftAnim = ObjectAnimator.ofFloat(travelYeZiShuLeftView, View.ALPHA, 0f)
                 yeziHideLeftAnim.duration = setDuration(375)
@@ -255,73 +447,65 @@ class TravelWithYouActivity : AppCompatActivity() {
                 val desertScaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, 1f, 1.3f)
                 val desertScaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, 1f, 1.3f)
                 val desertAnim = ObjectAnimator.ofPropertyValuesHolder(travelDesertIv, desertScaleX, desertScaleY)
-                desertAnim.duration = setDuration(3500)
+                desertAnim.duration = setDuration(3166)
 
                 //草原放大 位移
                 val desertAnim2 = ObjectAnimator.ofPropertyValuesHolder(travelDesertIv, desertScaleX, desertScaleY)
-                desertAnim2.duration = setDuration(3500)
+                desertAnim2.duration = setDuration(3791)
                 desertAnim2.interpolator = AccelerateInterpolator()
                 val desertAnim2_1 = ObjectAnimator.ofFloat(travelDesertIv, View.TRANSLATION_Y, UIHelper.dip2px(50.toDouble()).toFloat())
-                desertAnim2_1.duration = setDuration(3500)
+                desertAnim2_1.duration = setDuration(3791)
                 desertAnim2_1.interpolator = AccelerateInterpolator()
+
+                //海滩放大
+                val desertAnim3 = ObjectAnimator.ofPropertyValuesHolder(travelDesertIv, desertScaleX, desertScaleY)
+                desertAnim3.duration = setDuration(3333)
 
 
                 //场景转换 透明度
-                val desertToGrasslandAnim = ObjectAnimator.ofFloat(travelDesertIv, View.ALPHA, 1f, 0.3f, 1f)
-                desertToGrasslandAnim.duration = setDuration(300)
+                val desertToGrasslandAnim = ObjectAnimator.ofFloat(travelDesertIv, View.ALPHA, 1f, 0.3f)
+                desertToGrasslandAnim.duration = setDuration(208)
                 desertToGrasslandAnim.addListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationStart(animation: Animator?) {
-                        travelDesertIv.postDelayed({
-                            desertAnim.end()
-                            travelDesertIv.scaleX = 1f
-                            travelDesertIv.scaleY = 1f
-                            travelDesertIv.setImageResource(R.drawable.travel_grassland_bg)
-                            //飘落的薰衣草
-                            diffusionAnim.start()
-                            grassRightAlphaAnim.start()
-                            grassLeftAlphaAnim.start()
-                            desertAnim2.start()
-                            desertAnim2_1.start()
-                        }, setDuration(150))
+                    override fun onAnimationEnd(animation: Animator?) {
+                        desertAnim.end()
+                        travelDesertIv.scaleX = 1f
+                        travelDesertIv.scaleY = 1f
+                        travelDesertIv.setImageResource(R.drawable.travel_grassland_bg)
+                        //飘落的薰衣草
+                        diffusionAnim.start()
                     }
                 })
+                val desertToGrasslandAnim2 = ObjectAnimator.ofFloat(travelDesertIv, View.ALPHA, 0.3f, 1f)
+                desertToGrasslandAnim2.duration = setDuration(208)
+
                 //转到海滩
-                val grasslandToBeachAnim = ObjectAnimator.ofFloat(travelDesertIv, View.ALPHA, 1f, 0.3f, 1f)
-                grasslandToBeachAnim.duration = setDuration(300)
+                val grasslandToBeachAnim = ObjectAnimator.ofFloat(travelDesertIv, View.ALPHA, 1f, 0.3f)
+                grasslandToBeachAnim.duration = setDuration(395)
                 grasslandToBeachAnim.addListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationStart(animation: Animator?) {
-                        travelDesertIv.postDelayed({
-                            travelDesertIv.scaleX = 1f
-                            travelDesertIv.scaleY = 1f
-                            travelDesertIv.translationY = 0f
-                            travelDesertIv.setImageResource(R.drawable.travel_beach_bg)
-                            yezishuLeftAlphaAnim.start()
-                            yezishuRightAlphaAnim.start()
-                            yezishuRightAnim.start()
-                            yezishuLeftAnim.start()
-                            desertAnim.start()
-                        }, setDuration(150))
+                    override fun onAnimationEnd(animation: Animator?) {
+                        travelDesertIv.scaleX = 1f
+                        travelDesertIv.scaleY = 1f
+                        travelDesertIv.translationY = 0f
+                        travelDesertIv.setImageResource(R.drawable.travel_beach_bg)
                     }
                 })
 
-                val beachToMapleAnim = ObjectAnimator.ofFloat(travelDesertIv, View.ALPHA, 1f, 0.3f, 1f)
-                beachToMapleAnim.duration = setDuration(300)
+                val grasslandToBeachAnim2 = ObjectAnimator.ofFloat(travelDesertIv, View.ALPHA, 0.3f, 1f)
+                grasslandToBeachAnim2.duration = setDuration(395)
+
+                val beachToMapleAnim = ObjectAnimator.ofFloat(travelDesertIv, View.ALPHA, 1f, 0.3f)
+                beachToMapleAnim.duration = setDuration(395)
                 beachToMapleAnim.addListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationStart(animation: Animator?) {
-                        travelDesertIv.postDelayed({
-                            travelDesertIv.scaleX = 1f
-                            travelDesertIv.scaleY = 1f
-                            travelDesertIv.translationY = 0f
-                            travelDesertIv.setImageResource(R.drawable.travel_maple_bg)
-                            mapleLeftAnim.start()
-                            mapleRightAnim.start()
-                            mapleLeftAlphaAnim1.start()
-                            mapleRightAlphaAnim1.start()
-                            desertAnim.start()
-                            planeAnim1.start()
-                        }, setDuration(150))
+                    override fun onAnimationEnd(animation: Animator?) {
+                        travelDesertIv.scaleX = 1f
+                        travelDesertIv.scaleY = 1f
+                        travelDesertIv.translationY = 0f
+                        travelDesertIv.setImageResource(R.drawable.travel_maple_bg)
                     }
                 })
+
+                val beachToMapleAnim2 = ObjectAnimator.ofFloat(travelDesertIv, View.ALPHA, 0.3f, 1f)
+                beachToMapleAnim2.duration = setDuration(395)
 
 
                 //车 800
@@ -348,40 +532,31 @@ class TravelWithYouActivity : AppCompatActivity() {
                 })
 
                 val transY2 = transY - UIHelper.dip2px(8.toDouble())
-                val carContainerTransY2 = PropertyValuesHolder.ofFloat(View.TRANSLATION_Y, transY, transY2, transY, transY2, transY, transY2, transY, transY2, transY, transY2, transY, transY2, transY, transY2, transY)
-                val carContainerScaleX2 = PropertyValuesHolder.ofFloat(View.SCALE_X, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f)
-                val carContainerScaleY2 = PropertyValuesHolder.ofFloat(View.SCALE_Y, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f)
+                val x = 1f
+                val y = 1.05f
+                val carContainerTransY2 = PropertyValuesHolder.ofFloat(View.TRANSLATION_Y,
+                        transY, transY2, transY, transY2, transY, transY2, transY, transY2, transY, transY2, transY, transY2, transY, transY2, transY, transY2,
+                        transY, transY2, transY, transY2, transY, transY2, transY, transY2, transY, transY2, transY, transY2, transY, transY2, transY, transY2)
+                val carContainerScaleX2 = PropertyValuesHolder.ofFloat(View.SCALE_X,
+                        1f, y, 1f, y, 1f, y, 1f, y, 1f, y, 1f, y, 1f, y, 1f, y,
+                        1f, y, 1f, y, 1f, y, 1f, y, 1f, y, 1f, y, 1f, y, 1f, y)
+                val carContainerScaleY2 = PropertyValuesHolder.ofFloat(View.SCALE_Y,
+                        1f, y, 1f, y, 1f, y, 1f, y, 1f, y, 1f, y, 1f, y, 1f, y,
+                        1f, y, 1f, y, 1f, y, 1f, y, 1f, y, 1f, y, 1f, y, 1f, y)
                 val carAnimRound2 = ObjectAnimator.ofPropertyValuesHolder(travelCarContainerView,
                         carContainerTransY2,
                         carContainerScaleX2,
                         carContainerScaleY2)
                 //18000 - 2500 - 800
-                carAnimRound2.duration = setDuration(14700)
+                carAnimRound2.duration = setDuration(13000)
 
-                //头像
-                travelAvatarLeft.alpha = 0f
-                travelAvatarRight.alpha = 0f
+                val carAnimRound3 = ObjectAnimator.ofFloat(travelCarContainerView, View.ALPHA, 0f)
+                carAnimRound3.duration = setDuration(500)
 
-                val avatarLeftAlphaAnimRound1 = ObjectAnimator.ofFloat(travelAvatarLeft, View.ALPHA, 1f)
-                avatarLeftAlphaAnimRound1.duration = setDuration(800)
-                val avatarRightAlphaAnimRound1 = ObjectAnimator.ofFloat(travelAvatarRight, View.ALPHA, 1f)
-                avatarRightAlphaAnimRound1.duration = setDuration(800)
-                val avatarTransY1 = UIHelper.dip2px(-30.toDouble()).toFloat()
-                val avatarLeftTransYAnimRound2 = ObjectAnimator.ofFloat(travelAvatarLeft, View.TRANSLATION_Y, avatarTransY1)
-                avatarLeftTransYAnimRound2.duration = avatarTransRound2Duration
-                val avatarRightTransYAnimRound2 = ObjectAnimator.ofFloat(travelAvatarRight, View.TRANSLATION_Y, avatarTransY1)
-                avatarRightTransYAnimRound2.duration = avatarTransRound2Duration
-
-                val avatarLeftScaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f)
-                val avatarLeftScaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f)
-                val avatarLeftAnimRound3 = ObjectAnimator.ofPropertyValuesHolder(travelAvatarLeft, avatarLeftScaleX, avatarLeftScaleY)
-                avatarLeftAnimRound3.duration = setDuration(13000)
-
-                val avatarRightScaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f)
-                val avatarRightScaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f, 1f, 1.05f)
-                val avatarRightAnimRound3 = ObjectAnimator.ofPropertyValuesHolder(travelAvatarRight, avatarRightScaleX, avatarRightScaleY)
-                avatarRightAnimRound3.duration = setDuration(13000)
-
+                val travelBowknotAnim = ObjectAnimator.ofFloat(travelBowknot,View.ROTATION,
+                        2f,-2f,2f,-2f,2f,-2f,2f,-2f,2f,-2f,2f,-2f,2f,-2f,2f,-2f,
+                        2f,-2f,2f,-2f,2f,-2f,2f,-2f,2f,-2f,2f,-2f,2f,-2f,2f,-2f)
+                travelBowknotAnim.duration = setDuration(13000)
 
                 //热气球
                 val balloonTransYValue = -UIHelper.dip2px(200.toDouble()).toFloat()
@@ -399,10 +574,10 @@ class TravelWithYouActivity : AppCompatActivity() {
                     balloonAnims[i]?.duration = setDuration(2000)
 
                     balloonStartAnims[i] = ObjectAnimator.ofFloat(balloonViews[i], View.ALPHA, 1f)
-                    balloonStartAnims[i]?.duration = setDuration(500)
+                    balloonStartAnims[i]?.duration = setDuration(200)
 
                     balloonEndAnims[i] = ObjectAnimator.ofFloat(balloonViews[i], View.ALPHA, 0f)
-                    balloonEndAnims[i]?.duration = setDuration(500)
+                    balloonEndAnims[i]?.duration = setDuration(200)
 
                     balloonAnims[i]?.addListener(object : AnimatorListenerAdapter() {
                         override fun onAnimationStart(animation: Animator?) {
@@ -414,11 +589,13 @@ class TravelWithYouActivity : AppCompatActivity() {
                         }
                     })
                 }
-                balloonAnims[2]?.startDelay = setDuration(500)
-                balloonAnims[3]?.startDelay = setDuration(1700)
-                balloonAnims[4]?.startDelay = setDuration(1800)
+                balloonAnims[0]?.startDelay = setDuration(200)
+                balloonAnims[1]?.startDelay = setDuration(200)
+                balloonAnims[2]?.startDelay = setDuration(1100)
+                balloonAnims[3]?.startDelay = setDuration(1900)
+                balloonAnims[4]?.startDelay = setDuration(2000)
                 balloonAnims[5]?.startDelay = setDuration(3800)
-                balloonAnims[6]?.startDelay = setDuration(4300)
+                balloonAnims[6]?.startDelay = setDuration(4000)
 
 
                 //海鸥灰过
@@ -458,9 +635,9 @@ class TravelWithYouActivity : AppCompatActivity() {
                 val otherBigTransX = PropertyValuesHolder.ofFloat(View.TRANSLATION_X, rootWidth)
                 val otherBigTransY = PropertyValuesHolder.ofFloat(View.TRANSLATION_Y, UIHelper.dip2px(20.toDouble()).toFloat(), UIHelper.dip2px(10.toDouble()).toFloat())
                 val otherBigAnim = ObjectAnimator.ofPropertyValuesHolder(travelOtherSeaMewBigView, otherBigTransX, otherBigTransY)
-                otherBigAnim.duration = setDuration(1500)
+                otherBigAnim.duration = setDuration(2733)
                 val otherSmallAnim = ObjectAnimator.ofPropertyValuesHolder(travelOtherSeaMewSmallView, otherBigTransX, otherBigTransY)
-                otherSmallAnim.duration = setDuration(1500)
+                otherSmallAnim.duration = setDuration(2733)
                 val otherSeaMewAlphaAnim1 = ObjectAnimator.ofFloat(travelOtherSeaMewBigView, View.ALPHA, 0f)
                 otherSeaMewAlphaAnim1.duration = setDuration(375)
                 val otherSeaMewAlphaAnim2 = ObjectAnimator.ofFloat(travelOtherSeaMewSmallView, View.ALPHA, 0f)
@@ -472,58 +649,108 @@ class TravelWithYouActivity : AppCompatActivity() {
                         travelSeaMewSmallView.postDelayed({
                             otherBigAnim.start()
                             otherSmallAnim.start()
-                        }, 800)
+                        }, 660)
                     }
                 })
 
+                seaMewAnim.addListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationStart(animation: Animator?) {
+                        for (i in 0..6) {
+                            balloonViews[i].visibility = View.INVISIBLE
+                        }
+                    }
+                })
 
-                //骆驼 with 云
-                animSet.play(camelAnim)
-                animSet.play(cloudRightAnim).with(camelAnim)
+                animSet.interpolator = LinearInterpolator()
+                //骆驼 with 云  camelAnim 2000 : camelDuration
+                animSet.play(camelAnim) //骆驼 : 2000
+                animSet.play(cloudRightAnim).with(camelAnim)  //云 : 18000
                 animSet.play(cloudLeftAnim).with(camelAnim)
 
                 //在骆驼结束 沙漠背景放大 车平移出现 头像透明
-                animSet.play(desertAnim).after(camelAnim)
-                animSet.play(carAnimRound1).after(camelAnim)
-                animSet.play(avatarLeftAlphaAnimRound1).after(camelAnim)
-                animSet.play(avatarRightAlphaAnimRound1).after(camelAnim)
+                animSet.play(desertAnim).after(camelDuration) //沙漠 : 3166
+                animSet.play(carAnimRound1).after(camelDuration - 100)
+                animSet.play(avatarLeftAlphaAnimRound1).after(camelDuration - 100)
+                animSet.play(avatarRightAlphaAnimRound1).after(camelDuration - 100) //#
 
                 //车平移出现之后 持续模拟开动效果 直到结束
-                animSet.play(carAnimRound2).after(carAnimRound1)
+                animSet.play(carAnimRound2).after(carAnimRound1) //车 向上400  向下400
+                animSet.play(travelBowknotAnim).after(carAnimRound1) //车 向上400  向下400
 
                 //车平移出现之后 头像开始向上平移
-                animSet.play(avatarLeftTransYAnimRound2).after(carAnimRound1)
+                animSet.play(avatarLeftTransYAnimRound2).after(carAnimRound1) // 头像向上 avatarLeftTransYAnimRound2 : 1300
                 animSet.play(avatarRightTransYAnimRound2).after(carAnimRound1)
+
 
                 //头像向上平移之后 开始放大缩小直到飞机来
                 animSet.play(avatarLeftAnimRound3).after(avatarRightTransYAnimRound2)
                 animSet.play(avatarRightAnimRound3).after(avatarRightTransYAnimRound2)
+
                 //头像向上平移之后 热气球出现
                 for (i in 0..6) {
                     animSet.play(balloonAnims[i]).after(avatarRightTransYAnimRound2)
                 }
-                animSet.play(desertToGrasslandAnim).after(camelDuration + carRound1Duration + avatarTransRound2Duration + 800)
-
+                animSet.play(desertToGrasslandAnim).after(camelDuration + carRound1Duration + avatarTransRound2Duration + setDuration(1300))
+                animSet.play(desertToGrasslandAnim2).after(desertToGrasslandAnim)
+                animSet.play(grassRightAlphaAnim).after(desertToGrasslandAnim) // 3500
+                animSet.play(grassLeftAlphaAnim).after(desertToGrasslandAnim)
+                animSet.play(desertAnim2).after(desertToGrasslandAnim)  // 3791 : 草原 放大时间
+                animSet.play(desertAnim2_1).after(desertToGrasslandAnim)
                 //场景转换完成
                 animSet.play(grassLeftAnim).after(desertToGrasslandAnim)
                 animSet.play(grassRightAnim).after(desertToGrasslandAnim)
 
                 //转到海滩 海鸥灰过
-                animSet.play(grasslandToBeachAnim).after(grassLeftAnim)
-                animSet.play(seaMewAnim).after(grassLeftAnim)
+                animSet.play(grasslandToBeachAnim).after(desertAnim2)  //395
+                animSet.play(seaMewAnim).after(desertAnim2)
+                animSet.play(grasslandToBeachAnim2).after(grasslandToBeachAnim)
+                animSet.play(yezishuLeftAlphaAnim).after(grasslandToBeachAnim)
+                animSet.play(yezishuRightAlphaAnim).after(grasslandToBeachAnim)
+                animSet.play(yezishuRightAnim).after(grasslandToBeachAnim)
+                animSet.play(yezishuLeftAnim).after(grasslandToBeachAnim)
+                animSet.play(desertAnim3).after(grasslandToBeachAnim)
+                animSet.play(travelBoat1AlphaAnim).after(grasslandToBeachAnim)
+                animSet.play(travelBoat2AlphaAnim).after(grasslandToBeachAnim)
+                animSet.play(travelBoat2Anim).after(grasslandToBeachAnim)
+                animSet.play(travelBoat1Anim).after(grasslandToBeachAnim)
 
                 //海鸥之后 慢飞
                 animSet.play(seaMewSmallSlowAnim).after(seaMewAnim)
 
-                //慢飞后 枫叶林背景  隐藏海滩背景
-                animSet.play(yeziHideRightAnim).after(seaMewSmallSlowAnim)
-                animSet.play(yeziHideLeftAnim).after(seaMewSmallSlowAnim)
-                animSet.play(otherSeaMewAlphaAnim2).after(seaMewSmallSlowAnim)
-                animSet.play(otherSeaMewAlphaAnim1).after(seaMewSmallSlowAnim)
-                animSet.play(beachToMapleAnim).after(seaMewSmallSlowAnim)
 
-                animSet.interpolator = LinearInterpolator()
+                // 枫叶林背景  隐藏海滩背景
+                animSet.play(yeziHideRightAnim).after(desertAnim3)
+                animSet.play(yeziHideLeftAnim).after(desertAnim3)
+                animSet.play(otherSeaMewAlphaAnim2).after(desertAnim3)
+                animSet.play(otherSeaMewAlphaAnim1).after(desertAnim3)
+                animSet.play(travelBoat2AlphaAnim2).after(desertAnim3)
+                animSet.play(travelBoat1AlphaAnim2).after(desertAnim3)
+
+                animSet.play(beachToMapleAnim).after(desertAnim3)
+
+                animSet.play(beachToMapleAnim2).after(beachToMapleAnim)
+                animSet.play(mapleLeftAnim).after(beachToMapleAnim)
+                for (anim in mapleanims) {
+                    animSet.play(anim).after(beachToMapleAnim)
+                }
+                animSet.play(mapleRightAnim).after(beachToMapleAnim)
+                animSet.play(mapleLeftAlphaAnim1).after(beachToMapleAnim)
+                animSet.play(mapleRightAlphaAnim1).after(beachToMapleAnim)
+                animSet.play(desertAnim).after(beachToMapleAnim)
+                animSet.play(planeAnim1).after(beachToMapleAnim)
+                animSet.play(planeAnim2).after(planeAnim1)
+                animSet.play(planeAnim3).after(planeAnim2)
+                animSet.play(avatarLeftTransYAnimRound4).after(planeAnim2)
+                animSet.play(avatarRightTransYAnimRound4).after(planeAnim2)
+                animSet.play(carAnimRound3).after(planeAnim2)
+                animSet.play(animContainerViewAnim).after(planeAnim3)
                 animSet.start()
+                animSet.addListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator?) {
+                        rl?.removeAllViews()
+                    }
+                })
+                //animSet.start()
 
                 val testSet = AnimatorSet()
                 testSet.play(seaMewAnim)
