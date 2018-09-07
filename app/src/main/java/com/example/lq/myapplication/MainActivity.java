@@ -2,6 +2,7 @@ package com.example.lq.myapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -31,6 +32,7 @@ import com.example.lq.myapplication.textureview.TextureDemoActivity;
 import com.example.lq.myapplication.utils.ToastUtil2;
 import com.example.lq.myapplication.xfermode.XFerModeActivity;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.net.InetAddress;
@@ -41,39 +43,36 @@ import java.util.Arrays;
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity implements App.ITest{
+
+    static {
+        try{
+            System.loadLibrary("avutil-55");
+            System.loadLibrary("swresample-2");
+            System.loadLibrary("avcodec-57");
+            System.loadLibrary("avformat-57");
+            System.loadLibrary("swscale-4");
+            System.loadLibrary("avfilter-6");
+            System.loadLibrary("sffhelloworld");
+            System.loadLibrary("ffmpegrun");
+        }catch(Exception e){
+            e.printStackTrace();
+            Log.e("ffmpeg",e.toString());
+        }
+
+    }
+
+    public void onProgress(int second,int duration) {
+        Log.e("progress",second + " " + duration);
+    }
+
+    public native String avcodecinfo();
+    public native int ffmpegRun( String[] cmd);
     final ArrayList<Integer> a = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        //b
-        Log.e("ippp", Arrays.toString(";".split(";")));
-
-        for (int i = 0; i < 100000; i++) {
-            a.add(i);
-        }
-        try {
-            Log.e("ippp", InetAddress.getByName("1.1.1.1").toString());
-        } catch (Exception e) {
-            Log.e("ippp", e.toString());
-        }
-
-        App.getInstance().setITest(this);
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-//                                Log.e("ippp", Arrays.toString(InetAddress.getAllByName("192.168.1.2;123.132.1.23")));
-
-                    Log.e("ippp", InetAddress.getByAddress(new byte[]{(byte) 192, 1, 1, 1}).toString());
-                } catch (Exception e) {
-                    Log.e("ippp", e.toString());
-
-                }
-            }
-        }).start();
-
-
+        System.loadLibrary("avutil-55");
+        //Log.e("ffmpeg",avcodecinfo());
+        addWater();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -217,6 +216,22 @@ public class MainActivity extends AppCompatActivity implements App.ITest{
         String ext = "?bizid=" + 23636 + "&txSecret=" + txSecret + "&txTime=" + Long.toHexString(txTime).toUpperCase();
         String accPlayUrl = "rtmp://" + 23636 + ".liveplay.myqcloud.com/live/" + liveCode + ext;
         Log.e("rtmp",accPlayUrl);
+    }
+
+    private void addWater() {
+        String srcUrl = new File(Environment.getExternalStorageDirectory(),"a1.mp4").getAbsolutePath();
+        String water = new File(Environment.getExternalStorageDirectory(),"water.png").getAbsolutePath();
+        String out = new File(Environment.getExternalStorageDirectory(),"output3.mp4").getAbsolutePath();
+        String cmd = "ffmpeg -i "+ srcUrl +" -i "+water+" -filter_complex [1:v]scale=378:93[water1];[0:v][water1]overlay=10:10 -y "+out;
+        //cmd = "ffmpeg -i " + srcUrl;
+        final String[] cmds = cmd.split(" ");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ffmpegRun(cmds);
+                ToastUtil2.showToast("水印添加完成");
+            }
+        }).start();
     }
 
     @Override
