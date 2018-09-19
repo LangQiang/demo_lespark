@@ -2,6 +2,7 @@
 #ifdef ANDROID
 #include <jni.h>
 #include <android/log.h>
+#include <string.h>
 #define LOGE(format,...) __android_log_print(ANDROID_LOG_ERROR,"myndk",format,##__VA_ARGS__)
 #else
 #define LOGE(format,...) printf("(>_<)"format "\n",##__VA_ARGS__)
@@ -13,11 +14,54 @@ static jobject jobj;
 static int duration = -1;
 
 JNIEXPORT jint JNICALL
-Java_com_example_lq_myapplication_MainActivity_ffmpegRun(JNIEnv *env, jobject thiz,jobjectArray commands){
+Java_com_example_lq_myapplication_utils_MediaHelper_addGifWater(
+
+    JNIEnv *env,
+    jobject thiz,
+    jstring mp4InputPath,
+    jstring gif,
+    jstring outPutPath,
+    jstring waterW,
+    jstring waterH,
+    jstring xPercent,
+    jstring yPercent
+    ){
     jc = (*env)->GetObjectClass(env,thiz);
     genv = env;
     jobj = (*env)->NewGlobalRef(env, thiz);
 
+    const char *jinput = (char *)(*env)->GetStringUTFChars(env,mp4InputPath,0);
+
+    const char *jgif = (char *)(*env)->GetStringUTFChars(env,gif,0);
+
+    const char *jout = (char *)(*env)->GetStringUTFChars(env,outPutPath,0);
+
+    const char *jwaterW = (char *)(*env)->GetStringUTFChars(env,waterW,0);
+
+    const char *jwaterH = (char *)(*env)->GetStringUTFChars(env,waterH,0);
+
+    const char *jxPercent = (char *)(*env)->GetStringUTFChars(env,xPercent,0);
+    const char *jyPercent = (char *)(*env)->GetStringUTFChars(env,yPercent,0);
+        //ffmpeg -y -i b.mp4 -ignore_loop 0 -i bw.gif -filter_complex '[1:v]scale=300:300[wm];[0:v][wm]overlay=x=W*0.5:y=H*0.5:shortest=1' test_out8.mp4
+    char filter[100];
+    strcpy(filter,"[1:v]scale=");
+    strcat(filter,jwaterW);
+    strcat(filter,":");
+    strcat(filter,jwaterH);
+    strcat(filter,"[wm];[0:v][wm]overlay=x=W*");
+    strcat(filter,jxPercent);
+    strcat(filter,":y=H*");
+    strcat(filter,jyPercent);
+    strcat(filter,":shortest=1");
+    char *argv1[] = {"ffmepg","-y","-i",jinput,"-ignore_loop","0","-i",jgif,"-filter_complex",filter,jout};
+    int argc1 = 0;
+    argc1 = sizeof(argv1) / sizeof(argv1[0]);
+
+
+    //ffmpeg -y -i b.mp4 -ignore_loop 0 -i bw.gif -filter_complex '[1:v]scale=300:300[wm];[0:v][wm]overlay=x=W*0.5:y=H*0.5:shortest=1' test_out8.mp4
+            //String cmd = "ffmpeg -i "+ mp4InputPath +" -ignore_loop 0 -i "+gif+" -filter_complex [1:v]scale="+waterW+":"+waterH+"[water1];[0:v][water1]overlay=x=W*"+xPercent+":y=H*" + yPercent + ":shortest=1 -y "+outPutPath;
+            //final String[] cmds = cmd.split("\\s+");
+/*
  int argc = (*env)->GetArrayLength(env,commands);
  char *argv[argc];
  int i;
@@ -25,49 +69,76 @@ Java_com_example_lq_myapplication_MainActivity_ffmpegRun(JNIEnv *env, jobject th
      jstring js = (jstring) (*env)->GetObjectArrayElement(env,commands, i);
      argv[i] = (char *) (*env)->GetStringUTFChars(env,js, 0);
  }
+ LOGE("%d %d",argc,argc1);
+ */
+
+
  LOGE("ff_run");
- int ret = ff_run(argc,argv);
+ int ret = ff_run(argc1,argv1);
+ (*env)->ReleaseStringUTFChars(env, mp4InputPath, jinput);
+ (*env)->ReleaseStringUTFChars(env, gif, jgif);
+ (*env)->ReleaseStringUTFChars(env, outPutPath, jout);
+ (*env)->ReleaseStringUTFChars(env, waterW, jwaterW);
+ (*env)->ReleaseStringUTFChars(env, waterH, jwaterH);
+ (*env)->ReleaseStringUTFChars(env, xPercent, jxPercent);
+ (*env)->ReleaseStringUTFChars(env, yPercent, jyPercent);
  jc = NULL;
  jobj=NULL;
  genv = NULL;
+
  return ret;
+
 }
 
 int getDuration(char *ret) {
     int result = 0;
+    if (duration == -2) {
+        char str[17] = {0};
+        strncpy(str,ret,16);
+        LOGE("%s",str);
+        //for (int i = 0; i < strlen(str); i++) {
+        //    LOGE("%c",str[i]);
+        //}
+        int h = (str[0] - '0')* 10 + (str[1]-'0');
+        int m = (str[3] - '0')* 10 + (str[4]-'0');
+        int s = (str[6] - '0')* 10 + (str[7]-'0');
+        int ms = (str[9] - '0') * 100 + (str[10] - '0') * 10;
+         result = ms + (s + m * 60 + h * 60 * 60) * 1000;
+         return result;
+    }
+
     char timeStr[10] = "Duration:";
     char *q = strstr(ret,timeStr);
     if (q != NULL) {
-        char str[17] = {0};
-        strncpy(str,q,16);
-        LOGE("%s",str);
+        return -2;
+    }
+    if (q != NULL) {
 
-        int h = (str[5] - '0')* 10 + (str[6]-'0');
-        int m = (str[8] - '0')* 10 + (str[9]-'0');
-        int s = (str[11] - '0')* 10 + (str[12]-'0');
-        int ms = (str[14] - '0') * 100 + (str[15] - '0') * 10;
-         result = ms + (s + m * 60 + h * 60 * 60) * 1000;
-         return result;
     } else {
         return -1;
     }
 }
 
 void callJavaMethod(char *ret) {
-    if (duration == -1) {
-        duration = getDuration(ret);
+    if (duration == -1 || duration == -2) {
+            duration = getDuration(ret);
+    }
+    if (duration <= 0) {
+        return ;
     }
     int result = 0;
-    char timeStr[10] = "time=";
+
+    char timeStr[10] = "kB time=";
     char *q = strstr(ret,timeStr);
     if (q != NULL) {
-        char str[17] = {0};
-        strncpy(str,q,16);
+        int i = 8;
+        char str[20] = {0};
+        strncpy(str,q,19);
 
-        int h = (str[5] - '0')* 10 + (str[6]-'0');
-        int m = (str[8] - '0')* 10 + (str[9]-'0');
-        int s = (str[11] - '0')* 10 + (str[12]-'0');
-        int ms = (str[14] - '0') * 100 + (str[15] - '0') * 10;
+        int h = (str[i + 0] - '0')* 10 + (str[i + 1]-'0');
+        int m = (str[i + 3] - '0')* 10 + (str[i + 4]-'0');
+        int s = (str[i + 6] - '0')* 10 + (str[i + 7]-'0');
+        int ms = (str[i + 9] - '0') * 100 + (str[i + 10] - '0') * 10;
         result = ms + (s + m * 60 + h * 60 * 60) * 1000;
     } else {
         return;

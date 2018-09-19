@@ -3,11 +3,13 @@ package com.example.lq.myapplication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Looper;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.lq.myapplication.anims.AnimsActivity;
@@ -29,6 +31,7 @@ import com.example.lq.myapplication.ratio.RatioViewActivity;
 import com.example.lq.myapplication.stickylist.StickyListActivity;
 import com.example.lq.myapplication.swipeback.TestSwipeBackActivity;
 import com.example.lq.myapplication.textureview.TextureDemoActivity;
+import com.example.lq.myapplication.utils.MediaHelper;
 import com.example.lq.myapplication.utils.ToastUtil2;
 import com.example.lq.myapplication.xfermode.XFerModeActivity;
 
@@ -44,21 +47,13 @@ import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity implements App.ITest{
 
-    static {
-        try{
-            System.loadLibrary("avutil-55");
-            System.loadLibrary("swresample-2");
-            System.loadLibrary("avcodec-57");
-            System.loadLibrary("avformat-57");
-            System.loadLibrary("swscale-4");
-            System.loadLibrary("avfilter-6");
-            System.loadLibrary("sffhelloworld");
-            System.loadLibrary("ffmpegrun");
-        }catch(Exception e){
-            e.printStackTrace();
-            Log.e("ffmpeg",e.toString());
-        }
 
+    public void start() {
+
+    }
+
+    public void complete() {
+        Log.e("progress","complete");
     }
 
     public void onProgress(int second,int duration) {
@@ -70,26 +65,92 @@ public class MainActivity extends AppCompatActivity implements App.ITest{
     final ArrayList<Integer> a = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        System.loadLibrary("avutil-55");
-        //Log.e("ffmpeg",avcodecinfo());
-        addWater();
+//        System.loadLibrary("avutil-55");
+//        Log.e("ffmpeg",avcodecinfo());
+        //addWater();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         Glide.with(this).load("http://lp-qiniu.gaypark.cn/attach/haalcqWqqGYq").into((ImageView) findViewById(R.id.personal_anchor_bg));
-
+        final TextView tttv = findViewById(R.id.encrypt);
         findViewById(R.id.encrypt).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, EncryptActivity.class));
+                //startActivity(new Intent(MainActivity.this, EncryptActivity.class));
+                String srcUrl = new File(Environment.getExternalStorageDirectory(),"b.mp4").getAbsolutePath();
+                String water = new File(Environment.getExternalStorageDirectory(),"bw.gif").getAbsolutePath();
+                String out = new File(Environment.getExternalStorageDirectory(),"output1.mp4").getAbsolutePath();
+                MediaHelper.getInstance().addGifWater(srcUrl, water, out,298,253,0.5f,0.5f, new MediaHelper.CallBack() {
+                    @Override
+                    public void onStart() {
+                        Log.e("progress","完成");
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                tttv.setText("开始");
+                            }
+                        });
+//                        if (Looper.getMainLooper().getThread() == Thread.currentThread()) {
+//                            Log.e("progress","start UI线程:" + Thread.currentThread().getName());
+//
+//                        } else {
+//                            Log.e("progress","start 子线程:" + Thread.currentThread().getName());
+//                        }
+                    }
+
+                    @Override
+                    public void onProgress(final int progress, final int duration) {
+//                        if (Looper.getMainLooper().getThread() == Thread.currentThread()) {
+//                            Log.e("progress","progress UI线程:" + Thread.currentThread().getName());
+//
+//                        } else {
+//                            Log.e("progress","progress 子线程:" + Thread.currentThread().getName());
+//                        }
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                tttv.setText(progress * 100 / duration + "%");
+                            }
+                        });
+                        if (duration > 0) {
+                            Log.e("progress",progress + "  " + duration);
+                        }
+                    }
+
+                    @Override
+                    public void onEnd() {
+//                        if (Looper.getMainLooper().getThread() == Thread.currentThread()) {
+//                            Log.e("progress","onEnd UI线程:" + Thread.currentThread().getName());
+//
+//                        } else {
+//                            Log.e("progress","onEnd 子线程:" + Thread.currentThread().getName());
+//                        }
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                tttv.setText("完成");
+                            }
+                        });
+
+                        Log.e("progress","完成");
+                    }
+                });
             }
         });
-        findViewById(R.id.ratio).setOnClickListener(new View.OnClickListener() {
+        final TextView mTestTv = findViewById(R.id.ratio);
+        mTestTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, RatioViewActivity.class));
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mTestTv.setText("test");
+                    }
+                }).start();
+
             }
         });
+        //startActivity(new Intent(MainActivity.this, RatioViewActivity.class));
         findViewById(R.id.choice).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

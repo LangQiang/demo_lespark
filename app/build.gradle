@@ -13,14 +13,17 @@ android {
         buildToolsVersion "26.0.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
 
     signingConfigs {
         release {
-            keyAlias 'demosign'
-            keyPassword 'xx'
-            storeFile file('/Users/wx/Documents/demo.jsk')
-            storePassword 'ss'
+            keyAlias 'alias'
+            keyPassword '123456'
+            storeFile file('sign.jsk')
+            storePassword '123456'
         }
     }
     buildTypes {
@@ -47,5 +50,6 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     compile 'com.github.yyued:SVGAPlayer-Android:2.1.1'
     compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile files('src/media_util_v1.jar')
 }
 

@@ -43,7 +43,6 @@ include $(BUILD_SHARED_LIBRARY)
 include $(CLEAR_VARS)
 LOCAL_MODULE := ffmpegrun
 LOCAL_SRC_FILES := cmdutils.c ffmpeg.c ffmpeg_filter.c ffmpeg_opt.c ffmpeg_run_impl.c
-
 LOCAL_C_INCLUDES :=/Users/LesPark-sh/Downloads/ffmpeg-3.2.12
 LOCAL_LDLIBS := -llog -lz
 LOCAL_SHARED_LIBRARIES :=libavcodec libavfilter libavformat libavutil libswresample libswscale

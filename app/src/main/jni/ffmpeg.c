@@ -4549,7 +4549,7 @@ static void log_callback_null(void *ptr, int level, const char *fmt, va_list vl)
     static char prev[1024];
     char line[1024];
     static int is_atty;
-    av_log_format_line(ptr, level, fmt, vl, line, sizeof(line), &print_prefix);
+    av_log_format_line2(ptr, level, fmt, vl, line, sizeof(line), &print_prefix);
     strcpy(prev, line);
     /*switch(level) {
         case AV_LOG_INFO:
@@ -4639,10 +4639,9 @@ int ff_run(int argc, char **argv)
            decode_error_stat[0], decode_error_stat[1]);
     if ((decode_error_stat[0] + decode_error_stat[1]) * max_error_rate < decode_error_stat[1])
         exit_program(69);
-    LOGE("exit_program");
 
     exit_program(received_nb_signals ? 255 : main_return_code);
-
+    LOGE("exit_program");
     nb_filtergraphs = 0;
     progress_avio = NULL;
 
