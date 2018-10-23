@@ -224,13 +224,17 @@
             </RelativeLayout>
         </RelativeLayout>
 
-        <ImageView
-            android:background="#ffffff"
-            android:id="@+id/text_iv"
-            android:src="@drawable/ddd"
-            android:scaleType="matrix"
-            android:layout_width="200dp"
-            android:layout_height="200dp" />
+        <TextView
+            android:id="@+id/input_mode"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="14dp"
+            android:background="#ebebeb"
+            android:gravity="center"
+            android:text="软键盘模式测试"
+            android:textColor="#333333"
+            android:textSize="20sp" />
+
         <TextView
             android:id="@+id/encrypt"
             android:layout_width="match_parent"

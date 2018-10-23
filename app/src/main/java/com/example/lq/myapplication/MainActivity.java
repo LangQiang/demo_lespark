@@ -3,7 +3,6 @@ package com.example.lq.myapplication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Looper;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -17,17 +16,15 @@ import com.example.lq.myapplication.anims.TravelWithYouActivity;
 import com.example.lq.myapplication.choice.ChoiceActivity;
 import com.example.lq.myapplication.collapsible.CollapsibleActivity;
 import com.example.lq.myapplication.colourful.ColourfulActivity;
-import com.example.lq.myapplication.encrypt.EncryptActivity;
 import com.example.lq.myapplication.flexible.FlexibleActivity;
 import com.example.lq.myapplication.global.App;
-import com.example.lq.myapplication.global.Constant;
+import com.example.lq.myapplication.inputmode.InputModeActivity;
 import com.example.lq.myapplication.levelup.LevelUpActivity;
 import com.example.lq.myapplication.likeview.LikeViewActivity;
 import com.example.lq.myapplication.ninepic.NinePicActivity;
 import com.example.lq.myapplication.notify.NotifyActivity;
 import com.example.lq.myapplication.pathanim.PathAnimActivity;
 import com.example.lq.myapplication.picpreview.TestPicActivity;
-import com.example.lq.myapplication.ratio.RatioViewActivity;
 import com.example.lq.myapplication.stickylist.StickyListActivity;
 import com.example.lq.myapplication.swipeback.TestSwipeBackActivity;
 import com.example.lq.myapplication.textureview.TextureDemoActivity;
@@ -36,13 +33,9 @@ import com.example.lq.myapplication.utils.ToastUtil2;
 import com.example.lq.myapplication.xfermode.XFerModeActivity;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.net.InetAddress;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity implements App.ITest{
@@ -137,16 +130,18 @@ public class MainActivity extends AppCompatActivity implements App.ITest{
                 });
             }
         });
+
+        findViewById(R.id.input_mode).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, InputModeActivity.class));
+            }
+        });
+
         final TextView mTestTv = findViewById(R.id.ratio);
         mTestTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mTestTv.setText("test");
-                    }
-                }).start();
 
             }
         });

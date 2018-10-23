@@ -26,6 +26,13 @@ Java_com_example_lq_myapplication_utils_MediaHelper_addGifWater(
     jstring xPercent,
     jstring yPercent
     ){
+    char info[10000] = { 0 };
+    	av_register_all();
+
+    	sprintf(info, "%s\n", avcodec_configuration());
+
+    	//LOGE("%s", info);
+    LOGE("%s",info);
     jc = (*env)->GetObjectClass(env,thiz);
     genv = env;
     jobj = (*env)->NewGlobalRef(env, thiz);
