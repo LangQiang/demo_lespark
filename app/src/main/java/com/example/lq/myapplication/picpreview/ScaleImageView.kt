@@ -12,7 +12,6 @@ import android.util.Log
 import android.view.*
 import android.view.animation.LinearInterpolator
 import android.widget.ImageView
-import kotlinx.android.synthetic.main.activity_pic_preview.*
 import java.util.*
 
 
@@ -49,6 +48,8 @@ class ScaleImageView @JvmOverloads constructor(
     private var mNeedFixTranslateY = 0f
     private var mOriginalRatio: Float = 1f
     private var mAnimIsPlaying = false
+    // 2018-11-13 加惯性滑动
+    private var mVelocityTracker : VelocityTracker? = null
 
     init {
     }
@@ -113,6 +114,15 @@ class ScaleImageView @JvmOverloads constructor(
                 Log.e("touch", "ACTION_DOWN ${event.pointerCount}")
                 mDx = event.rawX
                 mDy = event.rawY
+
+                // 2018-11-13 加惯性滑动
+                if(mVelocityTracker == null) {
+                    mVelocityTracker = VelocityTracker.obtain()
+                } else {
+                    mVelocityTracker?.clear()
+                }
+                mVelocityTracker?.addMovement(event)
+
                 return true
             }
             MotionEvent.ACTION_POINTER_DOWN -> {
@@ -170,6 +180,7 @@ class ScaleImageView @JvmOverloads constructor(
                             checkBoundAndTranslate(dX, dY)
                         }
                     }
+                    mVelocityTracker?.addMovement(event);
                 }
                 Log.e("touch", "ACTION_MOVE  ${event.pointerCount} ")
                 return true
@@ -196,6 +207,15 @@ class ScaleImageView @JvmOverloads constructor(
                         releaseRvWithAnim()
                     }
                 }
+                mVelocityTracker?.computeCurrentVelocity(1000)
+                var initialVelocity_Y = mVelocityTracker?.yVelocity as Float
+                var initialVelocity_X = mVelocityTracker?.xVelocity as Float
+                //flingSlide(initialVelocity_X,initialVelocity_Y, PointF(mDx,mDy))
+                Log.e("touch","$initialVelocity_X    $initialVelocity_Y")
+                if (mVelocityTracker != null) {
+                    mVelocityTracker?.recycle()
+                    mVelocityTracker = null
+                }
             }
             MotionEvent.ACTION_POINTER_UP -> {
                 mLastScale = (1 + mCurrentDistance / 400).toFloat()
@@ -206,6 +226,30 @@ class ScaleImageView @JvmOverloads constructor(
             }
         }
         return super.onTouchEvent(event)
+    }
+
+    private fun flingSlide(vX : Float, vY : Float, pointF: PointF) {
+        var vVector = Math.sqrt((vX * vX + vY * vY).toDouble())
+        var deceleration = 200
+        var flingDuration : Long = (vVector / deceleration).toLong()
+        Log.e("fling","${vX}   ${vY}   $flingDuration")
+
+        var endX = pointF.x + 0.5 * vX * flingDuration
+        var endY = pointF.y + 0.5 * vY * flingDuration
+        var flingTypeEvaluator = FlingTypeEvaluator(flingDuration,vX,vY)
+        var distance = 0.5 * vVector * vVector / deceleration
+        var flingSlideAnim = ValueAnimator.ofObject(flingTypeEvaluator,pointF, PointF(endX.toFloat(),endY.toFloat()))
+        flingSlideAnim.addUpdateListener {
+            var pointF = it.animatedValue as PointF
+            //位移
+            if (mDistance != 0.0) {
+                checkBoundAndTranslate(pointF.x, pointF.y)
+            }
+            Log.e("fling","${pointF.x}   ${pointF.y}")
+        }
+        flingSlideAnim.duration = flingDuration
+        flingSlideAnim.interpolator = LinearInterpolator()
+        flingSlideAnim.start()
     }
 
     private fun releaseRvWithAnim() {

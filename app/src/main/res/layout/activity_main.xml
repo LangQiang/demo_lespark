@@ -225,6 +225,17 @@
         </RelativeLayout>
 
         <TextView
+            android:id="@+id/rv_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="14dp"
+            android:background="#ebebeb"
+            android:gravity="center"
+            android:text="rv滑动距离"
+            android:textColor="#333333"
+            android:textSize="20sp" />
+
+        <TextView
             android:id="@+id/input_mode"
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -253,7 +264,7 @@
             android:layout_margin="14dp"
             android:background="#ebebeb"
             android:gravity="center"
-            android:text="指定宽高比"
+            android:text="preview"
             android:textColor="#333333"
             android:textSize="20sp" />
 
@@ -439,6 +450,8 @@
             android:text="带你去旅行"
             android:textColor="#333333"
             android:textSize="20sp" />
+
+
     </LinearLayout>
 
 </ScrollView>

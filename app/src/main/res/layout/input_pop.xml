@@ -4,8 +4,9 @@
     <RelativeLayout
         android:background="#33ff3e54"
         android:layout_width="match_parent"
-        android:layout_height="500dp">
+        android:layout_height="400dp">
         <EditText
+            android:cursorVisible="false"
             android:layout_width="match_parent"
             android:layout_height="48dp" />
         <View

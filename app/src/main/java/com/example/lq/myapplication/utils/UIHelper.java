@@ -1,9 +1,12 @@
 package com.example.lq.myapplication.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 import com.example.lq.myapplication.global.App;
 
@@ -42,5 +45,21 @@ public class UIHelper {
             sScreenHeight = metric.heightPixels;
         }
         return sScreenHeight;
+    }
+
+    public static void showKeyboard(Activity activity, EditText mEditTextContent) {
+        if (mEditTextContent == null || activity == null) return;
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+        if (imm != null)
+            imm.showSoftInput(mEditTextContent, InputMethodManager.SHOW_IMPLICIT);
+    }
+
+    public static void hideKeyboard(Activity activity, EditText mEditTextContent) {
+        if (mEditTextContent == null || activity == null) return;
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+        if (imm != null)
+            imm.hideSoftInputFromWindow(mEditTextContent.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 }

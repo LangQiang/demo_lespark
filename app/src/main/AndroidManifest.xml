@@ -110,7 +110,12 @@
             android:name=".anims.TravelWithYouActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".location.LocationActivity" />
-        <activity android:name=".inputmode.InputModeActivity" android:windowSoftInputMode="adjustPan"></activity>
+        <activity
+            android:name=".inputmode.InputModeActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity android:name=".camerapreview.CameraPreviewBaseActivity" />
+        <activity android:name=".rvscroll.RvScrollActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
     </application>
 
 </manifest>

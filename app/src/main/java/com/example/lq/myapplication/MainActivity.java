@@ -6,6 +6,7 @@ import android.os.Environment;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.lq.myapplication.anims.AnimsActivity;
 import com.example.lq.myapplication.anims.TravelWithYouActivity;
+import com.example.lq.myapplication.camerapreview.CameraPreviewBaseActivity;
 import com.example.lq.myapplication.choice.ChoiceActivity;
 import com.example.lq.myapplication.collapsible.CollapsibleActivity;
 import com.example.lq.myapplication.colourful.ColourfulActivity;
@@ -25,6 +27,7 @@ import com.example.lq.myapplication.ninepic.NinePicActivity;
 import com.example.lq.myapplication.notify.NotifyActivity;
 import com.example.lq.myapplication.pathanim.PathAnimActivity;
 import com.example.lq.myapplication.picpreview.TestPicActivity;
+import com.example.lq.myapplication.rvscroll.RvScrollActivity;
 import com.example.lq.myapplication.stickylist.StickyListActivity;
 import com.example.lq.myapplication.swipeback.TestSwipeBackActivity;
 import com.example.lq.myapplication.textureview.TextureDemoActivity;
@@ -61,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements App.ITest{
 //        System.loadLibrary("avutil-55");
 //        Log.e("ffmpeg",avcodecinfo());
         //addWater();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -83,12 +87,6 @@ public class MainActivity extends AppCompatActivity implements App.ITest{
                                 tttv.setText("开始");
                             }
                         });
-//                        if (Looper.getMainLooper().getThread() == Thread.currentThread()) {
-//                            Log.e("progress","start UI线程:" + Thread.currentThread().getName());
-//
-//                        } else {
-//                            Log.e("progress","start 子线程:" + Thread.currentThread().getName());
-//                        }
                     }
 
                     @Override
@@ -142,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements App.ITest{
         mTestTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startActivity(new Intent(MainActivity.this, CameraPreviewBaseActivity.class));
             }
         });
         //startActivity(new Intent(MainActivity.this, RatioViewActivity.class));
@@ -261,11 +259,13 @@ public class MainActivity extends AppCompatActivity implements App.ITest{
                 startActivity(new Intent(MainActivity.this, TravelWithYouActivity.class));
             }
         });
-        try {
-            throw new UnsatisfiedLinkError();
-        } catch (Error e) {
+        findViewById(R.id.rv_scroll).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, RvScrollActivity.class));
+            }
+        });
 
-        }
         long txTime = SystemClock.currentThreadTimeMillis() / 1000 + 2323232;
         String liveCode = 23636 + "_" + getStreamIdFromPushUrl("rtmp://23636.livepush.myqcloud.com/live/23636_562dafbac2fa510d99f93aea?txSecret=303b7222f25bb2d69085d087bf0a7f88&txTime=5B62BF58&bizid=23636").subID;
         String txSecret = Utils.getMD5("66654b35a1fed8c9e9aab52db23109e2" + liveCode + Long.toHexString(txTime).toUpperCase());
