@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="#ffffff"
+    android:layout_height="match_parent"
+    tools:context=".retractable.RetractableActivity">
+    <com.example.lq.myapplication.retractable.ExpandableTextViewNew
+        android:id="@+id/textTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:paddingBottom="15dp"
+        android:layout_marginTop="5dp"
+        app:etv_MaxLinesOnShrink = "1"
+        />
+    <TextView
+        android:id="@+id/textTv2"
+        android:layout_marginTop="40dp"
+        android:textSize="15sp"
+        app:layout_constraintTop_toBottomOf="@+id/textTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</android.support.constraint.ConstraintLayout>

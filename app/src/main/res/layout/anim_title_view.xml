@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="200dp">
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="100dp"></View>
+    <FrameLayout
+        android:id="@+id/bg_view"
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:background="#ff73f0"
+        android:layout_height="48dp">
+
+        <ImageView
+            android:id="@+id/left_icon_white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="14dp" />
+
+        <ImageView
+            android:id="@+id/left_icon_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="14dp" />
+
+        <ImageView
+            android:id="@+id/right_icon_white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="14dp" />
+
+        <ImageView
+            android:id="@+id/right_icon_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="14dp" />
+
+        <TextView
+            android:text="aaaaa"
+            android:id="@+id/center_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:shadowColor="#88000000"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="3"
+            android:singleLine="true"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </FrameLayout>
+</FrameLayout>

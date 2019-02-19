@@ -7,8 +7,13 @@ import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -27,12 +32,14 @@ import com.example.lq.myapplication.ninepic.NinePicActivity;
 import com.example.lq.myapplication.notify.NotifyActivity;
 import com.example.lq.myapplication.pathanim.PathAnimActivity;
 import com.example.lq.myapplication.picpreview.TestPicActivity;
+import com.example.lq.myapplication.retractable.RetractableActivity;
 import com.example.lq.myapplication.rvscroll.RvScrollActivity;
 import com.example.lq.myapplication.stickylist.StickyListActivity;
 import com.example.lq.myapplication.swipeback.TestSwipeBackActivity;
 import com.example.lq.myapplication.textureview.TextureDemoActivity;
 import com.example.lq.myapplication.utils.MediaHelper;
 import com.example.lq.myapplication.utils.ToastUtil2;
+import com.example.lq.myapplication.widget.AnimTitleView;
 import com.example.lq.myapplication.xfermode.XFerModeActivity;
 
 import java.io.File;
@@ -67,6 +74,16 @@ public class MainActivity extends AppCompatActivity implements App.ITest{
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        final AnimTitleView anim_title_view = findViewById(R.id.anim_title_view);
+        final FrameLayout bgView = anim_title_view.findViewById(R.id.bg_view);
+        anim_title_view.post(new Runnable() {
+            @Override
+            public void run() {
+                FrameLayout.LayoutParams layoutParams1 = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,144);
+                layoutParams1.gravity = Gravity.BOTTOM;
+                bgView.setLayoutParams(layoutParams1);
+            }
+        });
 
         Glide.with(this).load("http://lp-qiniu.gaypark.cn/attach/haalcqWqqGYq").into((ImageView) findViewById(R.id.personal_anchor_bg));
         final TextView tttv = findViewById(R.id.encrypt);
@@ -126,6 +143,13 @@ public class MainActivity extends AppCompatActivity implements App.ITest{
                         Log.e("progress","完成");
                     }
                 });
+            }
+        });
+
+        findViewById(R.id.retractable).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, RetractableActivity.class));
             }
         });
 
@@ -263,6 +287,12 @@ public class MainActivity extends AppCompatActivity implements App.ITest{
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, RvScrollActivity.class));
+            }
+        });
+        findViewById(R.id.sb_xuqiu).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, UnkonwActiviy.class));
             }
         });
 

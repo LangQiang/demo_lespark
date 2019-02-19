@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <RelativeLayout
             android:id="@+id/personal_anchor_container"
             android:layout_width="match_parent"
@@ -223,6 +224,46 @@
                 </RelativeLayout>
             </RelativeLayout>
         </RelativeLayout>
+        <com.example.lq.myapplication.widget.AnimTitleView
+            android:id="@+id/anim_title_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></com.example.lq.myapplication.widget.AnimTitleView>
+        <TextView
+            android:id="@+id/ada"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="14dp"
+            android:background="#ffffff"
+            android:shadowColor="#88000000"
+            android:shadowDx="0"
+            android:shadowDy="3"
+            android:shadowRadius="1"
+            android:gravity="center"
+            android:text="一个很傻的需求"
+            android:textColor="#ffffff"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/sb_xuqiu"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="14dp"
+            android:background="#ebebeb"
+            android:gravity="center"
+            android:text="一个很傻的需求"
+            android:textColor="#333333"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/retractable"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="14dp"
+            android:background="#ebebeb"
+            android:gravity="center"
+            android:text="全文-收起"
+            android:textColor="#333333"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/rv_scroll"

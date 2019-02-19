@@ -20,7 +20,9 @@ import java.util.*
 import android.animation.PropertyValuesHolder
 import android.view.*
 import android.view.animation.LinearInterpolator
+import com.example.lq.myapplication.utils.UIHelper
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 class PicPreviewActivity : AppCompatActivity() {
@@ -37,9 +39,10 @@ class PicPreviewActivity : AppCompatActivity() {
 
     private var picInfos : ArrayList<PicViewInfo>?=null
 
-    private var lastState = -1
     private var lastPos: Int = 0
-    private var currentPosition = -1
+    private var firstPos : Int = 0
+    private var firstView : ScaleImageView ?= null
+    private var lastView : ScaleImageView ?= null
 
     @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,8 +67,38 @@ class PicPreviewActivity : AppCompatActivity() {
             snapHelper.attachToRecyclerView(pic_container)
             pic_container.adapter = mAdapter
             pic_container.layoutManager.scrollToPosition(currentPos)
+            pic_container.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+                override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    val layoutManager = (recyclerView?.layoutManager as LinearLayoutManager)
+                    if (layoutManager.findFirstVisibleItemPosition() == layoutManager.findLastVisibleItemPosition()) {
+                        return
+                    }
+                    firstPos = layoutManager.findFirstVisibleItemPosition()
+                    lastPos = layoutManager.findLastVisibleItemPosition()
+                    firstView = (layoutManager.findViewByPosition(firstPos) as ViewGroup).getChildAt(0) as ScaleImageView
+                    lastView = (layoutManager.findViewByPosition(lastPos) as ViewGroup).getChildAt(0) as ScaleImageView
+                    Log.e("scrollstate","****** firstPos:$firstPos  lastPos:$lastPos")
+
+                }
+
+                override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                    if (newState == 0) {
+                        val layoutManager = (recyclerView?.layoutManager as LinearLayoutManager)
+                        val pos = layoutManager.findFirstVisibleItemPosition()
+                        Log.e("scrollstate","firstPos:$firstPos  lastPos:$lastPos   pos:$pos")
+                        if (pos == firstPos) {
+                            lastView?.zoomAnim(0)
+                        } else {
+                            firstView?.zoomAnim(0)
+                        }
+                    }
+
+                }
+            })
         }
-        root_view.post({
+        root_view.post{
             picInfos?.let {
                 val picViewInfo = it[currentPos]
                 val height = root_view.height
@@ -101,7 +134,7 @@ class PicPreviewActivity : AppCompatActivity() {
                 oaBgAlpha.interpolator = LinearInterpolator()
                 oaBgAlpha.start()
             }
-        })
+        }
     }
 
     private class PicRvAdapter(context: Context, data: ArrayList<PicViewInfo>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -162,6 +195,8 @@ class PicPreviewActivity : AppCompatActivity() {
 
     fun finishWithAnim() {
         var pos = (pic_container.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+        val itemView = (pic_container.layoutManager as LinearLayoutManager).findViewByPosition(pos) as ViewGroup
+        (itemView.getChildAt(0) as ScaleImageView).zoomAnim(0)
         setFinishAnimValueByPos(pos)
         //退出动画
         val pvhPicTranslationX = PropertyValuesHolder.ofFloat(View.TRANSLATION_X, pic_container.translationX,finishTranslationX)

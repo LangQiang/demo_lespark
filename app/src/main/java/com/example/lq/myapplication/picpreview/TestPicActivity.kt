@@ -13,11 +13,11 @@ class TestPicActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_test_pic)
-        for (i in 0 .. root_view.childCount - 1) {
-            root_view.getChildAt(i).setOnClickListener({
+        for (i in 0 .. (root_view.childCount - 1)) {
+            root_view.getChildAt(i).setOnClickListener{
 //                App.getInstance().invokeTestFun()
                 val arr = IntArray(2)
-                var mInfos = arrayListOf<PicViewInfo>()
+                val mInfos = arrayListOf<PicViewInfo>()
                 iv1.getLocationOnScreen(arr)
                 val picViewInfo1 = PicViewInfo(R.drawable.aaa,arr[0].toFloat(),arr[1].toFloat(),iv1.width,iv1.height,i == 0)
                 mInfos.add(picViewInfo1)
@@ -33,14 +33,14 @@ class TestPicActivity : AppCompatActivity() {
                 iv4.getLocationOnScreen(arr)
                 val picViewInfo4 = PicViewInfo(R.drawable.ddd,arr[0].toFloat(),arr[1].toFloat(),iv4.width,iv4.height,i == 0)
                 mInfos.add(picViewInfo4)
-                var intent = Intent(this,PicPreviewActivity :: class.java)
+                val intent = Intent(this,PicPreviewActivity :: class.java)
                 intent.putParcelableArrayListExtra("pic_info",mInfos)
                 intent.putExtra("current_pos",i)
                 startActivity(intent)
                 Log.e("drawable","${iv1.drawable.intrinsicWidth} ${iv1.drawable.intrinsicHeight}")
                 iv4.getLocationOnScreen(arr)
                 Log.e("drawable", "${root_view.height} ${iv4.x} ${iv4.y} ${arr[0]} ${arr[1]}")
-            })
+            }
         }
     }
 

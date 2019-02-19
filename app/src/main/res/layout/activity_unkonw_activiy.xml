@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    tools:context=".UnkonwActiviy">
+    <com.example.lq.myapplication.widget.VarietyView
+        android:id="@+id/variety_view"
+        android:background="#aaff3e54"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="200dp"
+        android:layout_height="30dp"></com.example.lq.myapplication.widget.VarietyView>
+    <TextView
+        android:id="@+id/tv"
+        android:maxWidth="167dp"
+        android:text="1aaaaaaaa"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp" />
+    <FrameLayout
+        android:background="#8080ff"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/bgIv"
+            android:background="@drawable/aaa"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
+</android.support.constraint.ConstraintLayout>

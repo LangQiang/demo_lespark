@@ -6,12 +6,15 @@ import android.graphics.Canvas
 import android.graphics.Matrix
 import android.graphics.PointF
 import android.graphics.RectF
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.util.Log
 import android.view.*
 import android.view.animation.LinearInterpolator
 import android.widget.ImageView
+import android.widget.Scroller
+import kotlinx.android.synthetic.main.activity_pic_preview.*
 import java.util.*
 
 
@@ -48,8 +51,12 @@ class ScaleImageView @JvmOverloads constructor(
     private var mNeedFixTranslateY = 0f
     private var mOriginalRatio: Float = 1f
     private var mAnimIsPlaying = false
+    private lateinit var gestureDetector : GestureDetector
+    private lateinit var scroller : Scroller
+    private var preFlingX : Float = 0f
+    private var preFlingY : Float = 0f
     // 2018-11-13 加惯性滑动
-    private var mVelocityTracker : VelocityTracker? = null
+//    private var mVelocityTracker : VelocityTracker? = null
 
     init {
     }
@@ -65,7 +72,34 @@ class ScaleImageView @JvmOverloads constructor(
             rv = mParent
             view = (rv.parent as ViewGroup).getChildAt(0)
         }
+        gestureDetector = GestureDetector(context, object : GestureDetector.SimpleOnGestureListener(){
+            override fun onFling(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, velocityY: Float): Boolean {
+                e2?.let {
+                    Log.e("findx","velocityX:$velocityX  velocityY:${velocityY} duration:${scroller.duration}")
+
+                    scroller.fling(e2?.rawX.toInt(),e2?.rawY.toInt(),velocityX.toInt(),velocityY.toInt(),-10000,10000,-10000,10000)
+                    preFlingX = e2?.rawX
+                    preFlingY = e2?.rawY
+                    startFlingAnim()
+                }
+                return super.onFling(e1, e2, velocityX, velocityY)
+            }
+        })
+        scroller = Scroller(context)
         mScreenHeight = (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.height
+        frameCallback = Choreographer.FrameCallback {
+            if (scroller.computeScrollOffset()) {
+                if (mDistance != 0.0) {
+                    Log.e("findx","preX:$preFlingX  currX:${scroller.currX} duration:${scroller.duration}")
+                    checkBoundAndTranslate(scroller.currX.toFloat() - preFlingX, scroller.currY.toFloat() - preFlingY)
+                    preFlingX = scroller.currX.toFloat()
+                    preFlingY = scroller.currY.toFloat()
+                }
+                Choreographer.getInstance().postFrameCallback(frameCallback)
+            } else {
+                Choreographer.getInstance().removeFrameCallback(frameCallback)
+            }
+        }
         //viewTreeObserver.addOnGlobalLayoutListener(this)
 //        this.post({
 //            val mTempSrc = RectF(0.0f, 0.0f, drawable.intrinsicWidth.toFloat(), drawable.intrinsicHeight.toFloat())
@@ -78,6 +112,33 @@ class ScaleImageView @JvmOverloads constructor(
 //            mOriginalRatio = value[0]
 //            Log.e("matrix", Arrays.toString(value))
 //        })
+//        rv.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+//            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+//                super.onScrollStateChanged(recyclerView, newState)
+//                Log.e("scroll","newState:$newState")
+//            }
+//
+//            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+//                super.onScrolled(recyclerView, dx, dy)
+//                Log.e("scroll","onScrolled: dx: $dx")
+//                val layoutManager = (recyclerView?.layoutManager as LinearLayoutManager);
+//                val pos = layoutManager.findFirstVisibleItemPosition()
+//                    Log.e("rv_scroll", "findFirstVisibleItemPosition: $pos")
+//                    val view = layoutManager.findViewByPosition(pos)
+//                    val x = view.left
+//                    Log.e("scroll","$pos viewX: $x")
+//
+//
+//            }
+//        })
+    }
+
+    private lateinit var frameCallback: Choreographer.FrameCallback
+
+
+
+    private fun startFlingAnim() {
+        Choreographer.getInstance().postFrameCallback(frameCallback)
     }
 
     override fun onDraw(canvas: Canvas?) {
@@ -100,6 +161,8 @@ class ScaleImageView @JvmOverloads constructor(
 
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
+        scroller.abortAnimation()
+        gestureDetector.onTouchEvent(event)
         if (mAnimIsPlaying) {
             parent.requestDisallowInterceptTouchEvent(true)
             return true
@@ -116,12 +179,12 @@ class ScaleImageView @JvmOverloads constructor(
                 mDy = event.rawY
 
                 // 2018-11-13 加惯性滑动
-                if(mVelocityTracker == null) {
-                    mVelocityTracker = VelocityTracker.obtain()
-                } else {
-                    mVelocityTracker?.clear()
-                }
-                mVelocityTracker?.addMovement(event)
+//                if(mVelocityTracker == null) {
+//                    mVelocityTracker = VelocityTracker.obtain()
+//                } else {
+//                    mVelocityTracker?.clear()
+//                }
+//                mVelocityTracker?.addMovement(event)
 
                 return true
             }
@@ -180,7 +243,7 @@ class ScaleImageView @JvmOverloads constructor(
                             checkBoundAndTranslate(dX, dY)
                         }
                     }
-                    mVelocityTracker?.addMovement(event);
+//                    mVelocityTracker?.addMovement(event);
                 }
                 Log.e("touch", "ACTION_MOVE  ${event.pointerCount} ")
                 return true
@@ -207,15 +270,15 @@ class ScaleImageView @JvmOverloads constructor(
                         releaseRvWithAnim()
                     }
                 }
-                mVelocityTracker?.computeCurrentVelocity(1000)
-                var initialVelocity_Y = mVelocityTracker?.yVelocity as Float
-                var initialVelocity_X = mVelocityTracker?.xVelocity as Float
-                //flingSlide(initialVelocity_X,initialVelocity_Y, PointF(mDx,mDy))
-                Log.e("touch","$initialVelocity_X    $initialVelocity_Y")
-                if (mVelocityTracker != null) {
-                    mVelocityTracker?.recycle()
-                    mVelocityTracker = null
-                }
+//                mVelocityTracker?.computeCurrentVelocity(1000)
+//                var initialVelocity_Y = mVelocityTracker?.yVelocity as Float
+//                var initialVelocity_X = mVelocityTracker?.xVelocity as Float
+//                //flingSlide(initialVelocity_X,initialVelocity_Y, PointF(mDx,mDy))
+//                Log.e("touch","$initialVelocity_X    $initialVelocity_Y")
+//                if (mVelocityTracker != null) {
+//                    mVelocityTracker?.recycle()
+//                    mVelocityTracker = null
+//                }
             }
             MotionEvent.ACTION_POINTER_UP -> {
                 mLastScale = (1 + mCurrentDistance / 400).toFloat()
@@ -295,7 +358,7 @@ class ScaleImageView @JvmOverloads constructor(
         zoomAnim(200)
     }
 
-    private fun zoomAnim(duration : Long) {
+    open fun zoomAnim(duration : Long) {
         mAnimIsPlaying = true
         val startValue = FloatArray(9)
         val endValue = FloatArray(9)
@@ -431,7 +494,6 @@ class ScaleImageView @JvmOverloads constructor(
             }
         } else {
             dX = 0f
-//            parent.requestDisallowInterceptTouchEvent(false)
         }
         if (drawableScaleHeight > height) {
             if (dY >= 0 && dY >= -y) {
@@ -442,8 +504,13 @@ class ScaleImageView @JvmOverloads constructor(
             }
         } else {
             dY = 0f
-//            parent.requestDisallowInterceptTouchEvent(false)
 
+        }
+//
+//        //横向滑动至边缘
+        if (Math.abs(dy) * 2 < Math.abs(dx) && dX == 0f) {
+            parent.requestDisallowInterceptTouchEvent(false)
+            dY = 0f
         }
         mScaleMatrix.postTranslate(dX, dY)
         imageMatrix = mScaleMatrix
@@ -455,4 +522,5 @@ class ScaleImageView @JvmOverloads constructor(
         var distance = Math.sqrt((downX - moveX).toDouble() * (downX - moveX) + (downY - moveY) * (downY - moveY))
         return distance > ViewConfiguration.get(context).scaledTouchSlop
     }
+
 }

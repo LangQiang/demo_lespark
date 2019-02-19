@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:background="#803e54ff"
+    android:layout_height="252dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="44dp"
+        android:gravity="center"
+        android:text="输入邀请码llqq"
+        android:textColor="#333333"
+        android:textSize="17sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <ImageView
+        android:id="@+id/input_invite_code_close"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:padding="14dp"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <com.example.lq.myapplication.inputmode.EditTextWithSoftKeyBoardListener
+        android:id="@+id/input_invite_code_et"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:inputType="number"
+        android:layout_marginLeft="36dp"
+        android:layout_marginRight="36dp"
+        android:layout_marginTop="30dp"
+        android:hint="邀请吗llqq"
+        android:paddingStart="14dp"
+        android:textColor="#333333"
+        android:textColorHint="#a8a8a8"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@+id/input_invite_code_close" />
+
+    <TextView
+        android:id="@+id/input_invite_code_ok"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:layout_marginBottom="50dp"
+        android:layout_marginLeft="36dp"
+        android:layout_marginRight="36dp"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:text="ok"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/input_invite_code_et" />
+</android.support.constraint.ConstraintLayout>
