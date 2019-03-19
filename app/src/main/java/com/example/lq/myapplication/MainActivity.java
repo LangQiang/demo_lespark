@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements App.ITest{
     public void onProgress(int second,int duration) {
         Log.e("progress",second + " " + duration);
     }
-
+    float alpha = 1.0f;
     public native String avcodecinfo();
     public native int ffmpegRun( String[] cmd);
     final ArrayList<Integer> a = new ArrayList<>();
@@ -74,6 +74,29 @@ public class MainActivity extends AppCompatActivity implements App.ITest{
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        final TextView text_alpha_tv = findViewById(R.id.text_alpha_tv);
+        text_alpha_tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alpha = alpha - 0.1f;
+                if (alpha == 0) {
+                    alpha = 1.0f;
+                }
+                text_alpha_tv.setAlpha(alpha);
+            }
+        });
+        final View text_alpha_fl = findViewById(R.id.text_alpha_fl);
+        text_alpha_fl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alpha = alpha - 0.1f;
+                if (alpha == 0) {
+                    alpha = 1.0f;
+                }
+                text_alpha_fl.setAlpha(alpha);
+                ToastUtil2.showToast("" + alpha);
+            }
+        });
         final AnimTitleView anim_title_view = findViewById(R.id.anim_title_view);
         final FrameLayout bgView = anim_title_view.findViewById(R.id.bg_view);
         anim_title_view.post(new Runnable() {

@@ -84,6 +84,19 @@ class ScaleImageView @JvmOverloads constructor(
                 }
                 return super.onFling(e1, e2, velocityX, velocityY)
             }
+
+            override fun onDoubleTap(e: MotionEvent?): Boolean {
+                Log.e("gesture","onDoubleTap")
+                zoomAnim()
+                return super.onDoubleTap(e)
+            }
+
+
+            override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
+                zoomAnim(50)
+                (context as PicPreviewActivity).finishWithAnim()
+                return super.onSingleTapConfirmed(e)
+            }
         })
         scroller = Scroller(context)
         mScreenHeight = (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.height
@@ -156,6 +169,15 @@ class ScaleImageView @JvmOverloads constructor(
         } else {
             super.onDraw(canvas)
         }
+//        super.onDraw(canvas)
+//        if (isInit) {
+//            isInit = false
+//            mMatrix = imageMatrix
+//            mSrcMatrix.set(mMatrix)
+//            val value = FloatArray(9)
+//            imageMatrix.getValues(value)
+//            mOriginalRatio = value[0]
+//        }
     }
 
 
@@ -249,9 +271,11 @@ class ScaleImageView @JvmOverloads constructor(
                 return true
             }
             MotionEvent.ACTION_UP -> {
-                if (!mMoved) {
-                    zoomAnim()
-                }
+//                if (!mMoved) {
+////                    zoomAnim()
+//                    zoomAnim(50)
+//                    (context as PicPreviewActivity).finishWithAnim()
+//                }
                 Log.e("touch", "ACTION_UP ")
                 if (mCurrentTouchMode == TOUCH_MODE_SLIDE_DOWN_2_FINISH) {
                     if (rv.translationY > mScreenHeight / 6) {
@@ -289,30 +313,6 @@ class ScaleImageView @JvmOverloads constructor(
             }
         }
         return super.onTouchEvent(event)
-    }
-
-    private fun flingSlide(vX : Float, vY : Float, pointF: PointF) {
-        var vVector = Math.sqrt((vX * vX + vY * vY).toDouble())
-        var deceleration = 200
-        var flingDuration : Long = (vVector / deceleration).toLong()
-        Log.e("fling","${vX}   ${vY}   $flingDuration")
-
-        var endX = pointF.x + 0.5 * vX * flingDuration
-        var endY = pointF.y + 0.5 * vY * flingDuration
-        var flingTypeEvaluator = FlingTypeEvaluator(flingDuration,vX,vY)
-        var distance = 0.5 * vVector * vVector / deceleration
-        var flingSlideAnim = ValueAnimator.ofObject(flingTypeEvaluator,pointF, PointF(endX.toFloat(),endY.toFloat()))
-        flingSlideAnim.addUpdateListener {
-            var pointF = it.animatedValue as PointF
-            //位移
-            if (mDistance != 0.0) {
-                checkBoundAndTranslate(pointF.x, pointF.y)
-            }
-            Log.e("fling","${pointF.x}   ${pointF.y}")
-        }
-        flingSlideAnim.duration = flingDuration
-        flingSlideAnim.interpolator = LinearInterpolator()
-        flingSlideAnim.start()
     }
 
     private fun releaseRvWithAnim() {

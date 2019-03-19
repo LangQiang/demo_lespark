@@ -20,6 +20,7 @@ import java.util.*
 import android.animation.PropertyValuesHolder
 import android.view.*
 import android.view.animation.LinearInterpolator
+import com.bumptech.glide.Glide
 import com.example.lq.myapplication.utils.UIHelper
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -139,7 +140,8 @@ class PicPreviewActivity : AppCompatActivity() {
 
     private class PicRvAdapter(context: Context, data: ArrayList<PicViewInfo>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            (holder as PicHolder).mPicIv.setImageResource(mData.get(position).mUrl)
+//            (holder as PicHolder).mPicIv.setImageResource(mData.get(position).mUrl)
+            Glide.with(mContext).load(mData.get(position).mUrl).into((holder as PicHolder).mPicIv)
 
         }
 

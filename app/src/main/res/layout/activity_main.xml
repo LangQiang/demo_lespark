@@ -228,6 +228,25 @@
             android:id="@+id/anim_title_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"></com.example.lq.myapplication.widget.AnimTitleView>
+        <FrameLayout
+            android:background="#ffffff"
+            android:id="@+id/text_alpha_fl"
+
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
+            <TextView
+                android:id="@+id/text_alpha_tv"
+                android:textSize="18sp"
+                android:shadowColor="#88000000"
+                android:shadowDx="0"
+                android:shadowDy="3"
+                android:shadowRadius="1"
+                android:textColor="#ffffff"
+                android:layout_gravity="center"
+                android:text="哈哈哈哈哈"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </FrameLayout>
         <TextView
             android:id="@+id/ada"
             android:layout_width="match_parent"

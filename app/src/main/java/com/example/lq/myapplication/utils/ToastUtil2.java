@@ -2,6 +2,7 @@ package com.example.lq.myapplication.utils;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.lq.myapplication.global.App;
@@ -35,6 +36,7 @@ public class ToastUtil2 {
                                 toast.show() ;
                             }
                         }else{
+                            Log.e("toast",message);
                             oldMsg = message ;
                             toast.setText(message) ;
                             toast.show() ;

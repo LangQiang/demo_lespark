@@ -49,7 +49,9 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+
     compile name: 'RecyclerViewLibrary-release', ext: 'aar'
+//    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.31'
     compile 'com.android.support:appcompat-v7:27.1.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:recyclerview-v7:27.1.1'
